@@ -21,7 +21,7 @@ def cabin():
             # flash(f'Ankomst {ankomst}, Avreise {avreise}, Melding {melding}', 'success') 
             db.session.add(ny_bestilling)
             db.session.commit()
-            flash('Bestilling gjennomført', 'success')
+            flash('Bestilling gjennomført. Se dine bestillinger på "Mine bestillinger"', 'success')
             
             return redirect(url_for('cabin.cabin'))
         else:
