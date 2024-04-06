@@ -22,6 +22,7 @@ def register():
                 else:
                     new_user = User(phoneNumber=form.phoneNumber.data)
                     new_user.set_password(form.password.data)
+                    new_user.add_email(form.email.data)
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(new_user)

@@ -29,7 +29,6 @@ babel = Babel(app)
 babel.init_app(app)
 app.config['BABEL_DEFAULT_LOCALE'] = 'nb_NO'
 
-# Set ENVIRONMENT variable based on the environment
 
 is_heroku = os.environ.get('IS_HEROKU', None)
 if is_heroku:

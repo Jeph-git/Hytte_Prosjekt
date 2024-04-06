@@ -2,7 +2,56 @@
 
 {% block content %}
 
-<h1 class="text-center mt-5 text-break">Velkommen til snøbrøyting!</h1>
-<h3 class="text-center mt-2 mb-5">Det beste du får innen snøbrøyting og snøbrøytings løsninger</h3>
+<style>
+    .jumbotron{
+        width: 100%;
+        
+    }
+    .jumbotron_img {
+        background-image: url("static/img/snøbrøyting_banner.jpg");
+        background-size: cover;
+        background-position: center;
+        height: 80vh;
+      }
+</style>
+
+<div class="jumbotron jumbotron_img text-light ">
+    <h1 class="text-center mt-5 text-break">DOKUMENTASJON AV SNØBRØYTING</h1>
+    <h2 class="text-center mt-2 text-break">DETTE ER EN DEMO</h2>
+    <h3 class="text-center mt-2 mb-5">Plowman er en robust og enkel løsning for dokumentasjon av snøbrøyting.</h3>
+
+ </div>
+
+
+
+ <div class="jumbotron text-center text-light" style="background-color:#f05f40;">
+    <h4>Plowman</h4>
+    <hr class="light">
+    <p class="text-center text-break">Plowman er et kraftig dokumentasjonsverktøy for snøbrøyting og veivedlikehold - like anvendelig for entrepenører og kommunale oppdragsgivere, eller private hyttegrender.</p>
+    <p>Systemet registrerer automatisk hvor og når de forskjellige veiene ble ryddet for snø. Man får en komplett oversikt over brøytede veier -</p>
+    <p>Arbeidet som entrepenørene utfører, antall timer brukt og antall km vei brøytet blir godt dokumentert. Oppdragsgiver kan til enhver tid se status. Tid og penger spart!</p>
+    <p>Innsynsløsning for publikum, Legg ut kart som viser når det ble brøytet sist! Fungerer akkurat som for skiløypevisning.</p>
+ </div>
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                  
+                  
+  
+                    <h5 class="card-title d-flex justify-content-center">Vennligst logg inn</h5>
+                
+                </div>
+                <div class="card-footer d-flex justify-content-center"> 
+                    <a href="{{ url_for('profil.rediger_profil') }}" class="btn btn-outline-primary">Logg inn</a>
+                </div>
+  
+            </div>
+        </div>
+    </div>
+  </div>
+   -->
 
 {% endblock %}
