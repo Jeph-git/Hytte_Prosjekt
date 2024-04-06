@@ -1,0 +1,8 @@
+    /* Styling for the map to work DONT REMOVE*/
+    #map {
+        position: relative;
+        border-radius: 8px;
+        height: 400px;  
+        width: 100%;  
+        }
+    

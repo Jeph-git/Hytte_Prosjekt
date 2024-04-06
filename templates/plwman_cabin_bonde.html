@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% if RESPONSE %}
+
+<div class="container mt-5">
+  <h3 class="mb-4">{{ tekst }}</h3>
+</div>
+
+{% endif %}
+
+{% if FORM %}
+<div class="container">
+    <div class="container">
+      <h1> {{ adresse }} BONDE</h1>
+    </div>
+    <div class="container mb-5">
+      {{ poststed }} {{ postnummer }}
+    </div>
+    
+    <!-- Calendar Form  w text container -->
+    <!-- <div class="container"> -->
+      <form class="     " method="POST" action="/cabin_bonde">
+        <div class="form-group">
+          <label for="skrivMelding">Skriv melding</label>
+          <textarea name="melding" class="form-control" id="skrivMelding" rows="3" ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">Brøytet ferdig</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

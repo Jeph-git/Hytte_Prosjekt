@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <h2>Mine bestillinger</h2>
+      {% for type, message in get_flashed_messages(with_categories=true) %}
+      <div class="alert {% if type == 'success' %}alert-success{% elif type == 'danger' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+      <div class="">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="d-none d-md-table-cell">#</th>
+              <th>Ankomst</th>
+              <th>Avreise</th>
+              <!-- <th class="d-none d-md-table-cell">Melding</th> -->
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set count = namespace(value=1) %}
+            {% for order in user_orders %}
+              <tr>
+                <td class="d-none d-md-table-cell">{{ count.value }}</td>
+                <td>{{ order.ankomst }}</td>
+                <td>{{ order.avreise }}</td>
+                <!-- <td class="d-none d-md-table-cell">{{ order.melding }}</td> -->
+                <td>
+                  <!-- Show Order Button -->
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#orderModal{{ order.id }}">
+                    Vis bestilling
+                  </button>
+                  
+                  <!-- Modal -->
+                  <div class="modal fade mt-5" id="orderModal{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
+                    <div class="modal-dialog mt-5" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="orderModalLabel{{ order.id }}">Bestilling detaljer</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p><strong>Ankomst:</strong> {{ order.ankomst }}</p>
+                          <p><strong>Avreise:</strong> {{ order.avreise }}</p>
+                          <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
+                        </div>
+                        <div class="modal-footer">
+                          <form method="post" action="{{ url_for('orders.delete_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil slette denne bestillingen?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-outline-danger">Slett bestilling</button>
+                          </form>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% set count.value = count.value + 1 %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
