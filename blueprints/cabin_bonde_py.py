@@ -1,5 +1,8 @@
-from flask import Flask, Blueprint, session, render_template, request
+from flask import Flask, Blueprint, session, render_template, request, flash, redirect, url_for
+from flask_login import current_user
 import requests
+from database import db
+from models import User
 from flask_login import login_required
  
 CABIN_BONDE = Blueprint('cabin_bonde', __name__)
@@ -10,7 +13,7 @@ def cabin_bonde():
     if request.method == 'POST':
         message = request.form.get('melding')
         adresse = session['adresse']
-        tlfNummer = session['tlfnummer']
+        tlfNummer = current_user.phoneNumber
 
         # Construct the data payload
         data = {
@@ -20,11 +23,11 @@ def cabin_bonde():
         # Check if the request was successful
 
         if response.ok:
-            tekst =  'Form data sent successfully!'
-            return render_template('plwman_cabin_bonde.html', tekst=tekst, RESPONSE=True)
+            flash('Brøytet ferdig: Registrert', 'success')
+            return redirect(url_for('map.map'))
         else:
-            tekst = 'Failed to send form data.'
-            return render_template('plwman_cabin_bonde.html', tekst=tekst, RESPONSE=True)
+            flash('Brøytet ferdig: Feil', 'danger')
+            return redirect(url_for('map.map'))
         
     else:
         title = 'Bestill - Brøyting.net'
