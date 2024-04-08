@@ -24,7 +24,8 @@ def orders():
     start = (page - 1) * per_page
     end = start + per_page
     total_pages = (len(active_orders) + per_page - 1) // per_page
-    items_on_page = active_orders[start:end]
+    active_orders_per_page = active_orders[start:end]
+    history_orders_per_page = history_orders[start:end]
 
     # Render the template with the orders data
     return render_template(
@@ -34,8 +35,8 @@ def orders():
         total_pages=total_pages,
         page=page,
         per_page=per_page,
-        active_orders=active_orders,
-        history_orders=history_orders
+        active_orders_per_page=active_orders_per_page,
+        history_orders_per_page=history_orders_per_page
     )
 
 

@@ -45,7 +45,7 @@
               </thead>
               <tbody>
                 {% set count = namespace(value=(page-1)*10+1) %}
-                {% for order in active_orders %}
+                {% for order in active_orders_per_page %}
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.ankomst }}</td>
@@ -124,7 +124,7 @@
               </thead>
               <tbody>
                 {% set count = namespace(value=(page-1)*10+1) %}
-                {% for order in history_orders %}
+                {% for order in history_orders_per_page %}
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.ankomst }}</td>
