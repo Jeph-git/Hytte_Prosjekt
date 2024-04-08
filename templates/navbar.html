@@ -22,6 +22,9 @@
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Mine bestillinger</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('sok_adresse.sok_adresse') }}">Legg til adresse</a>
+                </li>
                 {% if current_user.id == 33  or current_user.id == 53 %}
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}">Admin</a>

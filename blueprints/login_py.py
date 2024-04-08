@@ -41,7 +41,7 @@ def login():
                 else:
                     flash('Feil passord', 'danger')
             else:
-                flash('Ingen konto registrert med dette telefonnummeret', )
+                flash('Ingen konto registrert med dette telefonnummeret', 'danger')
         else:
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
     return render_template('login_html.html', form=form, title=title)

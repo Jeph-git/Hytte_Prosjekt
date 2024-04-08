@@ -27,3 +27,7 @@ class CalendarForm(FlaskForm):
 class AddEmailForm(FlaskForm):
     email = StringField('E-postadresse', validators=[DataRequired(), Email()])
     submit = SubmitField('Legg til e-post')
+
+class AddressForm(FlaskForm):
+    query = StringField('Adresse', validators=[DataRequired()], render_kw={"placeholder": "Skriv inn adresse"})
+    submit = SubmitField('Søk')

@@ -24,3 +24,7 @@ Bonde perspektiv
             inaktiv bruker, 
         Blått ikon
     Tabell og kart, for informasjon
+
+
+
+Mulighet å registrere hytte, legge til hytte i DB og vise denne på kartet

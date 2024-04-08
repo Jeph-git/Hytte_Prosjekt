@@ -17,7 +17,7 @@ def cabin():
         formAvreise = form.avreise.data
         formMelding = form.melding.data
         if cal_logic(formAnkomst, formAvreise):
-            ny_bestilling = Bestilling(ankomst=formAnkomst, avreise=formAvreise, melding=formMelding, bestillings_id=bruker_id)
+            ny_bestilling = Bestilling(ankomst=formAnkomst, avreise=formAvreise, melding=formMelding, bestillings_id=bruker_id, order_pending=True)
             # flash(f'Ankomst {ankomst}, Avreise {avreise}, Melding {melding}', 'success') 
             db.session.add(ny_bestilling)
             db.session.commit()

@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     def delete_account(self):
         # Sletter bestillinger
         Bestilling.query.filter_by(bestillings_id=self.id).delete()
+        Address.query.filter_by(user_id=self.id).delete()
         db.session.delete(self)
         db.session.commit() 
 
@@ -42,6 +43,7 @@ class Bestilling(db.Model):
     ankomst = db.Column(db.Date, nullable=False)
     avreise = db.Column(db.Date, nullable=False)
     melding = db.Column(db.String(255)) 
+    order_pending = db.Column(db.Boolean, default=True)  # New column to track order status
     # Foreign key to link Bestilling table to User (Refer to primary key of the user)
     bestillings_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -53,3 +55,29 @@ class Bestilling(db.Model):
             db.session.commit()
             return True
         return False
+
+        
+    def mark_order_as_finished(self):
+        self.order_pending = False
+        db.session.commit()
+    
+class Address(db.Model):
+    __tablename__ = 'addresses'
+    id = db.Column(db.Integer, primary_key=True)
+    address = db.Column(db.String(255), nullable=False)
+    postnummer = db.Column(db.String(10), nullable=False)
+    poststed = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<Address {self.address}, {self.postnummer}, {self.poststed}>"
+    
+    def update_address(self, new_address, new_postnummer, new_poststed, new_latitude, new_longitude):
+        self.address = new_address
+        self.postnummer = new_postnummer
+        self.poststed = new_poststed
+        self.latitude = new_latitude
+        self.longitude = new_longitude
+        db.session.commit()

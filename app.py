@@ -20,6 +20,7 @@ from blueprints.cabin_bonde_py import CABIN_BONDE
 from blueprints.profile_py import PROFIL
 from blueprints.orders_py import ORDERS
 from blueprints.admin import ADMIN
+from blueprints.sok_etter_adresse import SOK_ADRESSE
 
 app = Flask(__name__, instance_relative_config=True)
 login_manager = initialize_login_manager(app)
@@ -81,6 +82,9 @@ app.register_blueprint(ORDERS)
 
 # Admin page
 app.register_blueprint(ADMIN)
+
+# Søk adresse
+app.register_blueprint(SOK_ADRESSE)
 
 # 404 - Invalid URL
 @app.errorhandler(404)

@@ -49,6 +49,8 @@ def get_address(query):
             pos = adresser['representasjonspunkt']
             pos_lat,pos_lon= pos['lat'], pos['lon']
 
+
+    
             print(f'{adresse} {post_nummer}, {post_sted}\nPosisjon: {pos_lat}, {pos_lon}')
             return adresse, post_nummer, post_sted, pos_lat, pos_lon
         
@@ -89,4 +91,8 @@ def punktsok(func):
 
 # punktsok(10)
 
-# get_address('Samnangervegen 217')
+
+# get_address('Brekkeveien 10')
+# get_address('Kvamskogen 618, 5600, NORHEIMSUND')
+
+# print(f'Postnummer {}')
