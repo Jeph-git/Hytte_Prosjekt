@@ -17,9 +17,9 @@
 
 
   <!-- Map Container -->
-  <div class="container border-5 border-black mb-5">
+  <div class="container" style="width:100vw;">
 
-    <div class="container">
+    <div class="container"style="width:100vw;">
       <div class="col-md-8 offset-md-2">
         <div id="map"></div>
       </div>
@@ -28,14 +28,22 @@
 
 <script>
 
-  function getIconUrl(nummer) {
-      var nummerInt = parseInt(nummer);
-      if (nummerInt % 2 === 0) {
-          return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'; // Green icon for even postnummer
-      } else {
-          return 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon.png'; // Default blue icon for odd postnummer
+  //function getIconUrl(nummer) {
+      //var nummerInt = parseInt(nummer);
+      //if (nummerInt % 2 === 0) {
+          //return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'; // Green icon for even postnummer
+      //} else {
+          //return 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon.png'; // Default blue icon for odd postnummer
+      //}
+  //}
+  function getIconUrl(orderPending) {
+    for (let i of orderPending) {
+      if (i === true) {
+        return 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon.png';
       }
-  }
+    }
+    return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png';
+  } 
 
   function initMap() {
       var initialView = {{ config.initialView|tojson }};
@@ -63,7 +71,8 @@
           //                     "Postnummer: " + marker.postnummer + 
           //                     '<p><a href={{ url_for('dashboard.dashboard') }}'+'>Bestill</a>';
        
-          var iconUrl = getIconUrl(marker.nummer);
+          var iconUrl = getIconUrl(marker.order_pending);
+          console.log(marker.order_pending)
           var customIcon = new L.Icon({
               iconUrl: iconUrl,
               shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',

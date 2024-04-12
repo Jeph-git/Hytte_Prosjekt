@@ -23,21 +23,30 @@ def orders():
     per_page = 10
     start = (page - 1) * per_page
     end = start + per_page
-    total_pages = (len(active_orders) + per_page - 1) // per_page
+    total_pages_active = (len(active_orders) + per_page - 1) // per_page
     active_orders_per_page = active_orders[start:end]
+
+    # Pagination for history orders
+    total_pages_history = (len(history_orders) + per_page - 1) // per_page
     history_orders_per_page = history_orders[start:end]
 
+    # Determine the active tab based on the 'tab' query parameter in the URL
+    active_tab = request.args.get('tab', 'active')
+
+    
     # Render the template with the orders data
     return render_template(
         'orders_html.html',
         title=title,
         active_page='orders',
-        total_pages=total_pages,
-        page=page,
-        per_page=per_page,
-        active_orders_per_page=active_orders_per_page,
-        history_orders_per_page=history_orders_per_page
+        active_orders = active_orders,
+        history_orders = history_orders,
+
+
+        active_tab=active_tab
     )
+
+
 
 
 

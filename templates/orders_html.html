@@ -9,7 +9,7 @@
           <a class="nav-link active" aria-current="page" href="#active">Aktive Ordre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#history">Historie</a>
+          <a class="nav-link " href="#history" data-bs-toggle="tab" data-bs-target="#history">Historie</a>
         </li>
       </ul>
     </div>
@@ -44,8 +44,8 @@
                 </tr>
               </thead>
               <tbody>
-                {% set count = namespace(value=(page-1)*10+1) %}
-                {% for order in active_orders_per_page %}
+                {% set count = namespace(value=1) %}
+                {% for order in active_orders %}
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.ankomst }}</td>
@@ -97,6 +97,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- History of order -->
   <div class="tab-pane fade" id="history">
@@ -123,8 +124,8 @@
                 </tr>
               </thead>
               <tbody>
-                {% set count = namespace(value=(page-1)*10+1) %}
-                {% for order in history_orders_per_page %}
+                {% set count = namespace(value=1) %}
+                {% for order in history_orders %}
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.ankomst }}</td>
@@ -157,7 +158,7 @@
                               <button type="submit" class="btn btn-outline-danger">Slett bestilling</button>
                             </form>
                             <form method="post" action="{{ url_for('orders.update_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil markere ordre som fullført?')">
-                              <input type="hidden" name="_method" value="DELETE">
+                              <input type="hidden" name="_method" value="POST">
                               <button type="submit" class="btn btn-outline-secondary">Oppdater</button>
                             </form>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
@@ -176,40 +177,9 @@
       </div>
     </div>
   </div>
+
 </div>
 
-
-
-<!-- Page navigation -->
-<nav aria-label="Page navigation example" class="fixed-bottom">
-  <ul class="pagination justify-content-center">
-    {% if page > 1 %}
-    <li class="page-item">
-      <a class="page-link" href="{{ url_for('orders.orders', page=page-1) }}">Previous</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-      <a class="page-link disabled" href="{{ url_for('orders.orders', page=page-1) }}">Previous</a>
-    </li>
-
-    {% endif %}
-    {% for p in range(1, total_pages + 1) %}
-    <li class="page-item {% if p == page %}active{% endif %}">
-      <a class="page-link" href="{{ url_for('orders.orders', page=p) }}">{{ p }}</a>
-    </li>
-    {% endfor %}
-    {% if page < total_pages %}
-    <li class="page-item">
-      <a class="page-link" href="{{ url_for('orders.orders', page=page+1) }}">Next</a>
-    </li>
-
-    {% else %}
-    <li class="page-item disabled">
-      <a class="page-link disabled" href="{{ url_for('orders.orders', page=page+1) }}">Next</a>
-    </li>
-    {% endif %}
-  </ul>
-</nav>
 
 
 
@@ -225,7 +195,8 @@
       $(this).tab('show');
     });
   });
-</script>
+
+</script> 
 
 
 {% endblock %}
