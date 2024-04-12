@@ -43,8 +43,7 @@ class Bestilling(db.Model):
     ankomst = db.Column(db.Date, nullable=False)
     avreise = db.Column(db.Date, nullable=False)
     melding = db.Column(db.String(255)) 
-    order_pending = db.Column(db.Boolean, default=True)  # New column to track order status
-    # Foreign key to link Bestilling table to User (Refer to primary key of the user)
+    order_pending = db.Column(db.Boolean, default=True)     
     bestillings_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     @staticmethod

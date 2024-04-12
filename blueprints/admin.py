@@ -7,9 +7,9 @@ ADMIN = Blueprint('admin', __name__)
 @login_required
 def admin():
     title = 'Admin - Brøyting.net'
-    if current_user.id == 33 or current_user.id == 53:  # Replace with appropriate admin ID check
+    if current_user.id == 33 or current_user.id == 53:  
         users = User.query.all()
-        sorted_users = sorted(users, key=lambda user: user.id) # So that the newest user is at the bottom
+        sorted_users = sorted(users, key=lambda user: user.id) 
         return render_template('admin.html', title=title, active_page='admin', users=sorted_users)
     else:
         return redirect(url_for('dashboard.dashboard'))
@@ -18,7 +18,7 @@ def admin():
 @ADMIN.route('/admin/delete_user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
-    if current_user.id == 33 or current_user.id == 53:  # Replace with appropriate admin ID check
+    if current_user.id == 33 or current_user.id == 53:  
         user = User.query.get(user_id)
         if user:
             user.delete_account()
@@ -34,15 +34,16 @@ def delete_user(user_id):
 @ADMIN.route('/admin/delete_order/<int:order_id>', methods=['POST'])
 @login_required
 def delete_order(order_id):
-    # Assuming you have appropriate authorization checks here
-    
-    order = Bestilling.query.get(order_id)
-    if order:
-        # Delete the order
-        order.delete_order(order_id)
-        flash('Order deleted successfully.', 'success')
-        # Redirect back to the admin page
-        return redirect(url_for('admin.admin'))
+    if current_user.id == 33 or current_user.id == 53:  
+        order = Bestilling.query.get(order_id)
+        if order:
+            # Delete the order
+            order.delete_order(order_id)
+            flash('Order deleted successfully.', 'success')
+            # Redirect back to the admin page
+            return redirect(url_for('admin.admin'))
+        else:
+            flash('Order not found.', 'error')
+            return redirect(url_for('admin.admin'))
     else:
-        flash('Order not found.', 'error')
-        return redirect(url_for('admin.admin'))
+        return redirect(url_for('dashboard.dashboard'))

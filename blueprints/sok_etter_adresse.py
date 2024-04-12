@@ -17,11 +17,11 @@ def sok_adresse():
 @SOK_ADRESSE.route('/process_address')
 def process_address():
     address_data = request.args.get('address_data')
-    address_dict = eval(address_data)  # Convert string representation of dictionary to a dictionary object
+    address_dict = eval(address_data) 
     adressetekstForm = address_dict.get('adressetekst')
     postnummerForm = address_dict.get('postnummer')
     poststedForm = address_dict.get('poststed')
-    # Accessing nested keys
+    
     representasjonspunkt = address_dict.get('representasjonspunkt', {})
     lonForm = representasjonspunkt.get('lon')
     latForm = representasjonspunkt.get('lat')

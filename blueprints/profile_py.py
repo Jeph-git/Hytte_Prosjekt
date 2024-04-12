@@ -29,16 +29,16 @@ def rediger_profil():
     if form.validate_on_submit():
         new_email = form.email.data
         if new_email != current_user.email:
-            # Check if the new email already exists in the database
+            
             existing_user = User.query.filter_by(email=new_email).first()
             if existing_user:
                 flash('E-postadressen er allerede i bruk av en annen bruker. Vennligst velg en annen e-postadresse.', 'error')
             else:
-                # Update user's email in the database
+                
                 current_user.email = new_email
                 db.session.commit()
                 flash('Profilen din ble oppdatert.', 'success')
-        # return redirect(url_for('profil.profil'))
+        
     title = 'Rediger Profil - Brøyting.net'
     email = current_user.email
     return render_template('rediger_profil.html', title=title, form=form, email=email)
@@ -46,8 +46,8 @@ def rediger_profil():
 @PROFIL.route('/profil/slett', methods=['POST'])
 @login_required
 def slett_profil():
-    # Delete the user's account
+    
     current_user.delete_account()
     flash('Kontoen din ble slettet.', 'success')
-    logout_user()  # Log out the user after deleting their account
+    logout_user() 
     return redirect(url_for('login.login'))
