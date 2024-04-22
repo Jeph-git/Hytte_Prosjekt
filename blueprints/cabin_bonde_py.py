@@ -4,10 +4,12 @@ import requests
 from database import db
 from models import User, Bestilling
 from flask_login import login_required
- 
+from utils import role_required
+
 CABIN_BONDE = Blueprint('cabin_bonde', __name__)
 
 @CABIN_BONDE.route('/cabin_bonde',methods=['POST','GET'])
+@role_required('plowman')
 @login_required
 def cabin_bonde():
     if request.method == 'POST':

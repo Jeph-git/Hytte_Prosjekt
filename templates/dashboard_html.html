@@ -2,8 +2,98 @@
 
 {% block content %}
   <!-- Info cards -->
+
+
+  <!-- PLOWMAN DASHBOARD -->
+  {% if current_user.role == 'plowman' %}
+
+  <div class="container-sm text-center">
+    <div class="row"> 
+
+      <!-- map container -->
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Kart</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('map.map') }}" class="btn btn-outline-primary">Vis kart</a>
+          </div>
+        </div>    
+      </div>
+
+      <!-- calendar container -->
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Kalender</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('calendar.display_calendar') }}" class="btn btn-outline-primary">Se kalender</a>
+          </div>
+        </div> 
+      </div>
+
+      <!-- orders container -->
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Bestillinger</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="" class="btn btn-outline-primary">Se bestillinger</a>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  
+  {% if current_user.role == 'governor' %}
+  <div class="container-sm text-center">
+    <div class="row"> 
+
+      <!-- bestillinger container -->
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Bestillinger</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('orders.orders') }}" class="btn btn-outline-primary">Se bestillinger</a>
+          </div>
+        </div> 
+      </div>
+
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Legg til adresse</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('sok_adresse.sok_adresse') }}" class="btn btn-outline-primary">Legg til adresse</a>
+          </div>
+        </div> 
+      </div>
+
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Registrer hytteeier</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('sok_adresse.sok_adresse') }}" class="btn btn-outline-primary">Legg til adresse</a>
+          </div>
+        </div> 
+      </div>
+
+    </div>
+  </div>
+  {% endif %}
+  
+  <!-- CABIN OWNER DASHBOARD -->
+  {% if current_user.role == 'cabin_owner' %}
+
+
   <div class="container-sm text-center">
     <div class="row">  
+
+      
       <div class="col-md-6">
         <div class="card mt-5 ">
           <div class="card-body">
@@ -13,6 +103,8 @@
           </div>
         </div>
       </div>
+
+
       <div class="col-md-6">
         <div class="card mt-5">
           <div class="card-body">
@@ -24,4 +116,5 @@
       </div>
     </div>
   </div>
+  {% endif %}
 {% endblock %}

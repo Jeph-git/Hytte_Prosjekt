@@ -6,16 +6,17 @@ from flask_login import UserMixin
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    phoneNumber = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
+    phoneNumber = db.Column(db.String(120), unique=True, nullable=True)
+    password_hash = db.Column(db.String(255), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    role = db.Column(db.String(255), default='cabin_owner') 
+    notification_type = db.Column(db.String(255)) 
     email = db.Column(db.String(120), unique=True, nullable=True)
     bestillinger = db.relationship('Bestilling', backref='bestiller')
 
     def __repr__(self):
         return '<User %r>' % self.phoneNumber
     
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -54,8 +55,7 @@ class Bestilling(db.Model):
             db.session.commit()
             return True
         return False
-
-        
+    
     def mark_order_as_finished(self):
         self.order_pending = False
         db.session.commit()
@@ -80,3 +80,28 @@ class Address(db.Model):
         self.latitude = new_latitude
         self.longitude = new_longitude
         db.session.commit()
+
+
+class Customer(db.Model):
+    __tablename__ = 'customers'
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    name = db.Column(db.String(64), nullable=False)
+    use_sectors = db.Column(db.Boolean, nullable=False, default=False)
+    enable_public_view = db.Column(db.Boolean, default=False, nullable=False)
+    use_points = db.Column(db.Boolean)
+
+class Unit_Customer(db.Model):
+    __tablename__ = 'unit_customer'
+    unit_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
+
+
+class Unit_Sector(db.Model):
+    __tablename__ = 'unit_sector'
+    unit_id = db.Column(db.Integer, db.ForeignKey('unit_customer.unit_id'), primary_key=True)
+    sector_id = db.Column(db.Integer)
+
+class User_Customer(db.Model):
+    __tablename__ = 'user_customer'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    customer_id = db.Column(db.Integer)

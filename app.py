@@ -1,11 +1,12 @@
 import os
-
+# Flask imports
 from flask import Flask, url_for, render_template, request, session, redirect, send_from_directory, jsonify, send_file
 from flask_migrate import Migrate
 from flask_babel import Babel
 from flask_babel import _
-from models import User
 from flask_login import LoginManager
+
+from models import User
 from database import db
 from forms import LoginForm
 
@@ -21,6 +22,10 @@ from blueprints.profile_py import PROFIL
 from blueprints.orders_py import ORDERS
 from blueprints.admin import ADMIN
 from blueprints.sok_etter_adresse import SOK_ADRESSE
+from blueprints.set_password import SET_PASSWORD
+from blueprints.calendar import CALENDAR
+
+
 
 app = Flask(__name__, instance_relative_config=True)
 login_manager = initialize_login_manager(app)
@@ -29,7 +34,6 @@ login_manager = initialize_login_manager(app)
 babel = Babel(app)
 babel.init_app(app)
 app.config['BABEL_DEFAULT_LOCALE'] = 'nb_NO'
-
 
 is_heroku = os.environ.get('IS_HEROKU', None)
 if is_heroku:
@@ -40,11 +44,8 @@ if is_heroku:
 else:
     app.config.from_pyfile('config.py') # Hemmelig ting
 
-
-
 db.init_app(app)
 migrate = Migrate(app, db)
-
 
 @app.route("/", methods=['POST', 'GET'])
 def index(): 
@@ -86,6 +87,12 @@ app.register_blueprint(ADMIN)
 # Søk adresse
 app.register_blueprint(SOK_ADRESSE)
 
+# FOR SETTING THE PASSWORD FOR CREATED ACCOUNTS
+app.register_blueprint(SET_PASSWORD)
+
+# PLOWMAN CALENDAR
+app.register_blueprint(CALENDAR)
+
 # 404 - Invalid URL
 @app.errorhandler(404)
 def error_page(e):
@@ -100,4 +107,4 @@ def internal_server_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host= '192.168.39.205')
+    app.run(debug=True, host= '192.168.39.202')

@@ -1,49 +1,41 @@
-from flask import Flask, Blueprint, session, redirect, url_for, render_template, flash
+from flask import Flask, Blueprint, session, redirect, url_for, render_template, flash, request
 from flask_login import login_required, logout_user, current_user
 from models import User, Bestilling
+from utils import role_required
+
+
 ADMIN = Blueprint('admin', __name__)
 
+
 @ADMIN.route('/admin')
+@role_required('admin')
 @login_required
 def admin():
     title = 'Admin - Brøyting.net'
-    if current_user.id == 33 or current_user.id == 53:  
-        users = User.query.all()
-        sorted_users = sorted(users, key=lambda user: user.id) 
-        return render_template('admin.html', title=title, active_page='admin', users=sorted_users)
-    else:
-        return redirect(url_for('dashboard.dashboard'))
-    
+    users = User.query.all()
+    sorted_users = sorted(users, key=lambda user: user.id) 
+    return render_template('admin.html', title=title, active_page='admin', users=sorted_users)
 
 @ADMIN.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@role_required('admin')
 @login_required
 def delete_user(user_id):
-    if current_user.id == 33 or current_user.id == 53:  
-        user = User.query.get(user_id)
-        if user:
-            user.delete_account()
-            flash('User deleted successfully.', 'success')
-            # Redirect to the admin page with the user's ID as a parameter
-            return redirect(url_for('admin.admin', user_id=user_id, _anchor=f'userModal{user_id}'))
-        else:
-            flash('User not found.', 'error')
-        return redirect(url_for('admin.admin'))
+    user = User.query.get(user_id)
+    if user:
+        user.delete_account()
+        flash('User deleted successfully.', 'success')
     else:
-        return redirect(url_for('dashboard.dashboard'))
+        flash('User not found.', 'error')
+    return redirect(url_for('admin.admin'))
 
 @ADMIN.route('/admin/delete_order/<int:order_id>', methods=['POST'])
+@role_required('admin')
 @login_required
 def delete_order(order_id):
-    if current_user.id == 33 or current_user.id == 53:  
-        order = Bestilling.query.get(order_id)
-        if order:
-            # Delete the order
-            order.delete_order(order_id)
-            flash('Order deleted successfully.', 'success')
-            # Redirect back to the admin page
-            return redirect(url_for('admin.admin'))
-        else:
-            flash('Order not found.', 'error')
-            return redirect(url_for('admin.admin'))
+    order = Bestilling.query.get(order_id)
+    if order:
+        order.delete_order(order_id)
+        flash('Order deleted successfully.', 'success')
     else:
-        return redirect(url_for('dashboard.dashboard'))
+        flash('Order not found.', 'error')
+    return redirect(url_for('admin.admin'))

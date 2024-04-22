@@ -21,7 +21,7 @@ def process_address():
     adressetekstForm = address_dict.get('adressetekst')
     postnummerForm = address_dict.get('postnummer')
     poststedForm = address_dict.get('poststed')
-    
+    # Accessing nested keys
     representasjonspunkt = address_dict.get('representasjonspunkt', {})
     lonForm = representasjonspunkt.get('lon')
     latForm = representasjonspunkt.get('lat')

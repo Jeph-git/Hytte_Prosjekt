@@ -10,27 +10,97 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 {% if current_user.is_authenticated %}
+
+                <!-- For all roles -->
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
                 </li>
+
+                <!-- PLOWMAN ROLES -->
+                {% if current_user.role == 'plowman' %}
+
+
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'map' %}active{% endif %}" href="{{ url_for('map.map') }}">Kart</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %}" href="{{ url_for('calendar.display_calendar') }}">Kalender</a>
+                </li>
+                
+                {% endif %} <!-- ENDIF PLOWMAN -->
+
+                <!-- CABIN_OWNER ROLES -->
+                {% if current_user.role == 'cabin_owner' %}
+
+
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'cabin' %}active{% endif %}" href="{{ url_for('cabin.cabin') }}">Bestill snøbrøyting</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Mine bestillinger</a>
                 </li>
+                {% endif %} <!-- ENDIF CABIN_OWNER -->
+
+                <!-- GOVERNOR -->
+                {% if current_user.role == 'governor' %}
+           
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('sok_adresse.sok_adresse') }}">Legg til adresse</a>
                 </li>
-                {% if current_user.id == 33  or current_user.id == 53 %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_user') }}">Registrer hytteeier</a>
+                </li>
+
+
+                {% endif %} <!-- ENDIF GOVERNOR -->
+
+
+                <!-- ADMIN -->
+                {% if current_user.role == 'admin' %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'map' %}active{% endif %}" href="{{ url_for('map.map') }}">Kart</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %} disabled" href="">Kalender</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'cabin' %}active{% endif %}" href="{{ url_for('cabin.cabin') }}">Bestill snøbrøyting</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_governor') }}">Registrer ordfører</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_customer') }}">Registrer customer</a>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}">Admin</a>
                 </li>
+
+                {% endif %} <!-- ENDIF AMDIN -->                           
+                
                 {% endif %}
-                {% endif %}
+
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}

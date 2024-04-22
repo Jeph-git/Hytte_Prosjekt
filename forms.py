@@ -17,6 +17,21 @@ class RegisterForm(FlaskForm):
     confirmPassword = PasswordField('Bekreft Passord', validators=[DataRequired()])
     submit = SubmitField('Registrer')
 
+# Registrer ordfører OG Hytteeier
+class RegisterGovernorForm(FlaskForm):
+    phoneNumber = StringField('Telefonnummer', validators=[DataRequired()], render_kw={"type": "tel"})
+    email = StringField('E-postadresse', validators=[DataRequired(), Email()])
+    submit = SubmitField('Registrer')
+
+class RegisterCustomer(FlaskForm):
+    name = StringField('navn')
+    submit = SubmitField('Registrer')
+
+class SetPasswordForm(FlaskForm):
+    password = PasswordField('Passord', validators=[DataRequired()])
+    confirmPassword = PasswordField('Bekreft Passord', validators=[DataRequired()])
+    submit = SubmitField('Registrer')
+    
 class CalendarForm(FlaskForm):
     ankomst = DateField('Ankomst til hytten', format='%Y-%m-%d', validators=[DataRequired()])
     avreise = DateField('Avreise fra hytten', format='%Y-%m-%d', validators=[DataRequired()])
@@ -31,3 +46,6 @@ class AddEmailForm(FlaskForm):
 class AddressForm(FlaskForm):
     query = StringField('Adresse', validators=[DataRequired()], render_kw={"placeholder": "Skriv inn adresse"})
     submit = SubmitField('Søk')
+
+
+

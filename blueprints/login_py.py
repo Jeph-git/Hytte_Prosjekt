@@ -5,7 +5,6 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 
 LOGIN = Blueprint('login', __name__)
 
-
 login_manager = LoginManager()
 
 @login_manager.user_loader
@@ -24,22 +23,39 @@ def unauthorized():
     flash('Vennligst logg inn', 'warning')
     return redirect(url_for('login.login'))
 
+
+
 @LOGIN.route('/login', methods=['GET', 'POST'])
 def login():
     title='Login - Brøyting.net'
     form = LoginForm()
+
+    # Check if phone number query parameter exists
+    phoneNumber = request.args.get('phoneNumber', '')
+
+    # Pre-fill phone number field if it exists
+    if phoneNumber:
+        form.phoneNumber.data = phoneNumber
+    
     if form.validate_on_submit():
         if form.phoneNumber.data.isdigit() and len(form.phoneNumber.data) >= 8:
             user = User.query.filter_by(phoneNumber=form.phoneNumber.data).first()
             if user:
-                if user.check_password(form.password.data):
-                    remember = form.remember_me.data  # Check if "Remember Me" checkbox is checked
-                    print(remember)
-                    login_user(user, remember=remember)
-                    # flash('Logg inn vellykket')
-                    return redirect(url_for('dashboard.dashboard'))
+                if user.password_hash:
+                    if user.check_password(form.password.data):
+                        remember = form.remember_me.data  # Check if "Remember Me" checkbox is checked
+                        print(remember)
+                        login_user(user, remember=remember)
+                        '''
+                        # check_role = current_user.role # Sjekk rollen, også redirect basert på det
+                        # if role == 'admin':
+                        '''
+                        # flash('Logg inn vellykket')
+                        return redirect(url_for('dashboard.dashboard'))
+                    else:
+                        flash('Feil passord', 'danger')
                 else:
-                    flash('Feil passord', 'danger')
+                    flash('Du må sette opp passord', 'danger')  # Inform user to set up password
             else:
                 flash('Ingen konto registrert med dette telefonnummeret', 'danger')
         else:

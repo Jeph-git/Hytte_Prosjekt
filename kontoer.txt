@@ -1,0 +1,38 @@
+
+Admin role:
+    tlf:
+        95366650
+    pw:
+        admin
+    Use:
+        legg til ordfører "governor"
+
+
+Hyttefelt-ordfører (governor)
+    tlf:
+        11111111
+    pw:
+        11
+    Use:
+        Legge til adresse
+        Registrere hytteeier (Legg til info utenom passsord, også på registrering så sjekker om nummer ligger i db)
+        Kunne se bestillinger (hyttefeltet)
+
+Hytteeier
+    tlf:
+        22222222
+    pw:
+        22
+    Use:
+        Bestille brøyting
+        Se bestillinger (sine egne)
+
+Plowman
+    tlf: 
+        33333333
+    pw:
+        33
+    Use:
+        Se kart med ordre
+        Registrere brøyting ferdig
+        Se en kalender med bestillinger
