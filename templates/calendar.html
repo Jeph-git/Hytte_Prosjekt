@@ -76,34 +76,25 @@
         displayOrderModal(userId, message, address, postnummer, poststed);
       },
       dayCellContent: function(info) {
-        let cellDate = info.dateStr; // Get the date of the cell
+        // Randomly choose between the sun and snow emoji
+        let weatherEmoji = Math.random() < 0.5 ? '☀️' : '❄️';
+
+        // Create a <span> element for the emoji
+        let emojiElement = document.createElement('span');
+        emojiElement.textContent = weatherEmoji;
+        emojiElement.style.fontSize = '24px'; // Adjust the size of the emoji if needed
+      
+        // Retrieve the existing content of the cell (date)
+        let cellContent = info.dayNumberText;
+      
+        // Create a wrapper <div> for the emoji and the existing content
         let wrapperDiv = document.createElement('div');
-        
-        // Make AJAX request to fetch weather for the date
-        $.ajax({
-            url: `/weather/${encodeURIComponent(cellDate)}`, // Encode the date parameter
-            success: function(response) {
-                let weatherEmoji = response.weather_icon; // Get the weather icon from the response
-                let emojiElement = document.createElement('span');
-                emojiElement.classList.add('weather-icon');
-                emojiElement.textContent = weatherEmoji;
-    
-                let cellContent = info.dayNumberText;
-    
-                wrapperDiv.appendChild(emojiElement);
-                wrapperDiv.appendChild(document.createTextNode(cellContent));
-                info.el.innerHTML = ''; // Clear existing content
-                info.el.appendChild(wrapperDiv);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching weather data:', error);
-                let cellContent = info.dayNumberText;
-                info.el.innerHTML = cellContent;
-            }
-        });
-    
+        wrapperDiv.appendChild(emojiElement);
+        wrapperDiv.appendChild(document.createTextNode(cellContent)); // Add the existing date content
+      
+        // Return the wrapper <div> as the updated content
         return { domNodes: [wrapperDiv] };
-    }
+      }
     });
 
     calendar.render();
