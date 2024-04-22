@@ -24,11 +24,24 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def delete_account(self):
-        # Sletter bestillinger
+        # Delete related entries from User_Customer table
+        User_Customer.query.filter_by(user_id=self.id).delete()
+
+        # Delete related entries from Governor_Plowman table
+        Governor_Plowman.query.filter_by(governor_id=self.id).delete()
+
+        # Delete related entries from Governor_User table
+        Governor_User.query.filter_by(governor_id=self.id).delete()
+
+        # Delete associated orders
         Bestilling.query.filter_by(bestillings_id=self.id).delete()
+
+        # Delete associated addresses
         Address.query.filter_by(user_id=self.id).delete()
+
+        # Delete the user itself
         db.session.delete(self)
-        db.session.commit() 
+        db.session.commit()
 
     def add_email(self, email):
         self.email = email
@@ -105,3 +118,14 @@ class User_Customer(db.Model):
     __tablename__ = 'user_customer'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     customer_id = db.Column(db.Integer)
+
+
+class Governor_Plowman(db.Model):
+    __tablename__ = 'governor_plowan'
+    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    plowman_id = db.Column(db.Integer)
+
+class Governor_User(db.Model):
+    __tablename__ = 'governor_user'
+    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    user_id = db.Column(db.Integer)

@@ -4,10 +4,15 @@ from flask_login import login_required, current_user
 from forms import CalendarForm
 from models import User, Bestilling
 from database import db
+from utils import role_required
+
+
+
 CABIN = Blueprint('cabin', __name__)
 
 @CABIN.route('/cabin',methods=['POST','GET'])
 @login_required
+@role_required('cabin_owner')
 def cabin():
     title='Bestilling - Brøyting.net'
     form = CalendarForm()

@@ -78,7 +78,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %} disabled" href="">Kalender</a>
+                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %} " href="{{ url_for('calendar.display_calendar') }}">Kalender</a>
                 </li>
                 
                 <li class="nav-item">

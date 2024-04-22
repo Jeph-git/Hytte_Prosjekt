@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash  # Use secure password hashing
 from database import db
-from models import User, Customer, User_Customer
+from models import User, Customer, User_Customer, Governor_User
 from forms import RegisterForm, RegisterGovernorForm, RegisterCustomer
 from utils import generate_token, send_token
 
@@ -76,6 +76,13 @@ def register_user():
                 db.session.add(new_user)
                 db.session.commit()
 
+                governor_user = Governor_User(
+                    governor_id = current_user.id,
+                    user_id = new_user.id
+                )
+                db.session.add(governor_user)
+                db.session.commit()
+
                 # Generer token
                 token = generate_token(new_user.id)
 
@@ -100,7 +107,10 @@ def register_customer():
             db.session.commit()
 
 
-            user_customer = User_Customer(user_id=current_user.id, customer_id=new_customer.id)
+            user_customer = User_Customer(
+                user_id=current_user.id, 
+                customer_id=new_customer.id
+                )
             db.session.add(user_customer)
             db.session.commit()
 

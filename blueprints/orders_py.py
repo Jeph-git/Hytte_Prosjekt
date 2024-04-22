@@ -2,12 +2,13 @@ from flask import Flask, Blueprint, session, redirect, url_for, render_template,
 from models import User, Bestilling
 from flask_login import current_user, login_required
 from database import db
-
+from utils import role_required
 
 ORDERS = Blueprint('orders', __name__)
 
 
 @ORDERS.route('/orders')
+@role_required('plowman', 'cabin_owner','governor')
 @login_required
 def orders():
     title = 'Bestillinger - Brøyting.net'
@@ -27,6 +28,7 @@ def orders():
     )
 
 @ORDERS.route('/orders/delete/<int:order_id>', methods=['POST'])
+@role_required('plowman', 'cabin_owner','governor')
 @login_required
 def delete_order(order_id):
     order = Bestilling.query.get(order_id)
@@ -39,6 +41,7 @@ def delete_order(order_id):
     return redirect(url_for('orders.orders'))
 
 @ORDERS.route('/orders/update/<int:order_id>', methods=['POST'])
+@role_required('plowman', 'cabin_owner','governor')
 @login_required
 def update_order(order_id):
     order = Bestilling.query.get(order_id)
