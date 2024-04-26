@@ -46,35 +46,61 @@ def orders():
         )
     
     elif current_user.role == ROLES[3]:  # Plowman
+        title = 'Bestillinger'
         form = SelectCustomer()
 
-        
-        # Finn alle kunder som er linket til Plowman
-        customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
 
+        customer_count = len(User_Customer.query.filter_by(user_id=current_user.id).all())
         
-        # Fyll valgene for SelectField med kundenavn og IDer
+        selected_customer_id = None
+        if customer_count > 0:
+            selected_customer_id = User_Customer.query.filter_by(user_id=current_user.id).first().customer_id
+
+        customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
         form.customer.choices = [(customer.id, customer.name) for customer in customers]
 
         if form.validate_on_submit():
             selected_customer_id = form.customer.data
-        else:
-
-            # Vis skjemaet for å velge en kunde
-            return render_template('orders_html_plowman.html', title=title, active_page='orders', form=form)
 
         if selected_customer_id:
             user_ids = [uc.user_id for uc in User_Customer.query.filter_by(customer_id=selected_customer_id).all()]
             active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
             history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
-            
+
             return render_template('orders_html_plowman.html', title=title, active_page='orders', active_orders=active_orders, history_orders=history_orders, form=form)
-        else:
-
-            # Håndter tilfelle der ingen kunde er valgt
-            return "No customer selected"
 
 
+        return render_template('orders_html_plowman.html', title=title, active_page='orders', form=form)
+
+@ORDERS.route('/order_plowman', methods=['GET', 'POST'])
+@role_required(ROLES[3])
+@login_required
+def display_orders():
+    title = 'Bestillinger'
+    form = SelectCustomer()
+
+
+    customer_count = len(User_Customer.query.filter_by(user_id=current_user.id).all())
+    
+    selected_customer_id = None
+    if customer_count > 0:
+        selected_customer_id = User_Customer.query.filter_by(user_id=current_user.id).first().customer_id
+
+    customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
+    form.customer.choices = [(customer.id, customer.name) for customer in customers]
+
+    if form.validate_on_submit():
+        selected_customer_id = form.customer.data
+
+    if selected_customer_id:
+        user_ids = [uc.user_id for uc in User_Customer.query.filter_by(customer_id=selected_customer_id).all()]
+        active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
+        history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
+
+        return render_template('orders_html_plowman.html', title=title, active_page='orders', active_orders=active_orders, history_orders=history_orders, form=form)
+
+
+    return render_template('orders_html_plowman.html', title=title, active_page='orders', form=form)
 
 
 
