@@ -4,12 +4,12 @@ from datetime import datetime
 import json
 from flask_login import login_required, current_user
 from models import Address, User, Bestilling
-from utils import role_required
+from utils import role_required, ROLES
 
 MAP = Blueprint('map', __name__)
 
 @MAP.route('/map', methods=['POST', 'GET'])
-@role_required('plowman')
+@role_required(ROLES[3])
 @login_required
 def map():
     title = 'Kart - Brøyting.net'

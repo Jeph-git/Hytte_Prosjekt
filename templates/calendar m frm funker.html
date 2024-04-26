@@ -15,12 +15,21 @@
   .fc-event:hover {
     cursor: pointer;
   }
-  .weather-icon {
-    font-size: 18px; /* Adjust the size of the emoji */
-    margin-right: 5px; /* Add margin between the emoji and the date */
-  }
-
 </style>
+
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <form method="POST" action="{{ url_for('calendar.display_calendar') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group mt-3">
+          {{ form.customer(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Velg kunde</button>
+      </form>
+    </div>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
@@ -33,7 +42,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- Order details will be dynamically inserted here -->
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
@@ -53,14 +62,14 @@
     let events = [
       {% for event in events %}
       {
-        title: '{{ event.title | replace("'", "\\'") }}',
-        start: '{{ event.start }}',
-        end: '{{ event.end }}',
-        userId: '{{ event.userId }}',
-        message: '{{ event.message | replace("'", "\\'") }}',
-        address: '{{ event.address | replace("'", "\\'") }}',
-        postnummer: '{{ event.postnummer | replace("'", "\\'") }}',
-        poststed: '{{ event.poststed | replace("'", "\\'") }}',
+          "title": "{{ event.title | replace("'", "\\'") }}",  
+          "start": "{{ event.start }}",
+          "end": "{{ event.end }}",
+          "userId": "{{ event.userId }}",
+          "message": "{{ event.message }}",
+          "address": "{{ event.address }}",
+          "postnummer": "{{ event.postnummer }}",
+          "poststed": "{{ event.poststed }}"
       },
       {% endfor %}
     ];
@@ -79,10 +88,9 @@
         // Randomly choose between the sun and snow emoji
         let weatherEmoji = Math.random() < 0.5 ? '☀️' : '❄️';
 
-        // Create a <span> element for the emoji
         let emojiElement = document.createElement('span');
         emojiElement.textContent = weatherEmoji;
-        emojiElement.style.fontSize = '24px'; // Adjust the size of the emoji if needed
+        emojiElement.style.fontSize = '15px'; // Forandre størrelse på emoji
       
         // Retrieve the existing content of the cell (date)
         let cellContent = info.dayNumberText;

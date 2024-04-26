@@ -1,6 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if current_user.role == 'plowman' %}
+  
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <form method="POST" action="{{ url_for('orders.orders') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group mt-3">
+          {{ form.customer(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Velg kunde</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 
 <div class="container">
   <div class="row">
@@ -53,7 +70,7 @@
                   <td>{{ order.avreise }}</td>
                   <!-- <td class="d-none d-md-table-cell">{{ order.melding }}</td> -->
                   <td>
-                    <!-- Vis order knapp -->
+                    <!-- Show Order Button -->
                     <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#orderModal{{ order.id }}">
                       Vis ordre
                     </button>

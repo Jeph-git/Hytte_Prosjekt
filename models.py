@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     notification_type = db.Column(db.String(255)) 
     email = db.Column(db.String(120), unique=True, nullable=True)
     bestillinger = db.relationship('Bestilling', backref='bestiller')
+    customer_relationship = db.relationship('User_Customer', backref='customer')
 
     def __repr__(self):
         return '<User %r>' % self.phoneNumber
@@ -94,6 +95,30 @@ class Address(db.Model):
         self.longitude = new_longitude
         db.session.commit()
 
+class AddressTesting(db.Model):
+    __tablename__ = 'addresses_testing'
+    id = db.Column(db.Integer, primary_key=True)
+    address = db.Column(db.String(255), nullable=False)
+    postnummer = db.Column(db.String(10), nullable=False)
+    poststed = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    customer_name = db.Column(db.String(64), nullable=True, )
+
+
+    def __repr__(self):
+        return f"<Address {self.address}, {self.postnummer}, {self.poststed}>"
+    
+    def update_address(self, new_address, new_postnummer, new_poststed, new_latitude, new_longitude):
+        self.address = new_address
+        self.postnummer = new_postnummer
+        self.poststed = new_poststed
+        self.latitude = new_latitude
+        self.longitude = new_longitude
+        db.session.commit()
+
+
 
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -114,18 +139,24 @@ class Unit_Sector(db.Model):
     unit_id = db.Column(db.Integer, db.ForeignKey('unit_customer.unit_id'), primary_key=True)
     sector_id = db.Column(db.Integer)
 
+
+
 class User_Customer(db.Model):
     __tablename__ = 'user_customer'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    customer_id = db.Column(db.Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    # Add a unique constraint to ensure uniqueness of user-customer associations
+    __table_args__ = (db.UniqueConstraint('customer_id', 'user_id'),)
 
 
 class Governor_Plowman(db.Model):
     __tablename__ = 'governor_plowan'
-    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    plowman_id = db.Column(db.Integer)
+    plowman_id = db.Column(db.Integer, primary_key=True)
+    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 class Governor_User(db.Model):
     __tablename__ = 'governor_user'
-    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, primary_key=True)
+    governor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

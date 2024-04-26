@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import redirect, url_for, current_app
 from flask_login import current_user
-
+import time
 
 
 # ROLE REQUIRED LOGIC
@@ -19,6 +19,13 @@ from flask_login import current_user
 #         return wrapper
 #     return decorator
 
+
+ROLES = [
+    'admin',
+    'governor',
+    'cabin_owner',
+    'plowman',
+]
 
 def role_required(*required_roles):
     def decorator(func):
@@ -43,7 +50,7 @@ def generate_token(user_id):
 
 def send_token(user, token):
     # print(f'Token: {token}')
-    print(f"Sample URL: http://192.168.39.202:5000/set_password/{token}")
+    print(f"Sample URL: http://192.168.39.203:5000/set_password/{token}")
 
 
 def verify_token(token):
@@ -57,3 +64,15 @@ def verify_token(token):
     except BadSignature:
         # Token is invalid
         return None
+    
+# ENKEL FUNKSJON SOM VISER HVOR LANG TID EN FUNKSJON BRUKER PÅ Å KJØRE
+def timeit(func):
+    @wraps(func)
+    def timeit_wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        total_time = end_time - start_time
+        print(f'Function {func.__name__}{args} {kwargs} Took {total_time:.4f} seconds')
+        return result
+    return timeit_wrapper

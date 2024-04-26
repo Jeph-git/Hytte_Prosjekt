@@ -4,12 +4,12 @@ import requests
 from database import db
 from models import User, Bestilling
 from flask_login import login_required
-from utils import role_required
+from utils import role_required, ROLES
 
 CABIN_BONDE = Blueprint('cabin_bonde', __name__)
 
 @CABIN_BONDE.route('/cabin_bonde',methods=['POST','GET'])
-@role_required('plowman')
+@role_required(ROLES[3])
 @login_required
 def cabin_bonde():
     if request.method == 'POST':
@@ -17,12 +17,12 @@ def cabin_bonde():
         tlfNummer = current_user.phoneNumber
         adresse = session.get('adresse')
         order = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=True).first()
-        # Construct the data payload
+
         data = {
             'input': f"{adresse} er brøytet*$*$*{message}*$*$*{tlfNummer}"
         }
         response = requests.post('https://nabohund.no/plowman_cabin/plowman_cabin.php', data=data)
-        # Check if the request was successful
+
 
         if response.ok:
             flash('Brøytet ferdig: Registrert', 'success')
@@ -38,8 +38,5 @@ def cabin_bonde():
         poststed = request.args.get('poststed')
         postnummer = request.args.get('postnummer')
         session['adresse'] = adresse
-        # Process the node information as needed (e.g., save it to a database)
 
-        # return "Node information received: Adresse: {}, Poststed: {}, Postnummer: {}".format(adresse, poststed, postnummer)
-        # print(session['adresse'])
         return render_template('plwman_cabin_bonde.html', adresse = adresse, poststed = poststed, postnummer=postnummer,title=title, FORM=True)

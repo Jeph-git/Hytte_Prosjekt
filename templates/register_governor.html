@@ -15,7 +15,7 @@
           {% endfor %}
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Registrer hytteeier</h2>
+              <h2 class="text-uppercase text-center mb-5">Registrer {{ role }}</h2>
               <form method="POST">
                 <div class="form-outline mb-4">
                   {{ form.hidden_tag() }}
@@ -24,15 +24,15 @@
                 <div class="form-outline mb-4">
                   {{ form.email(class="form-control form-control-lg", type='email', placeholder='E-post') }}
                 </div>
-                <!-- CHANGES -->
-                <div class="form-group">
-                  {{ form.poststed(class="form-control form-control-lg", placeholder='Poststed') }}
-                </div>
-                <div class="form-group">
-                  {{ form.postnummer(class="form-control form-control-lg", placeholder='Postnummer') }}
-                </div>
 
-                <!-- END OF CHANGES -->
+
+                
+                <div class="form-group mb-4">
+                  <label for="customer" class="form-label">Velg kunde:</label>
+                  {{ form.customer(class="form-control form-control-lg") }}
+                </div>
+                  
+
                 <div class="d-flex justify-content-center">
                   {{ form.submit(class="btn btn-primary btn-block btn-lg") }}
                 </div>

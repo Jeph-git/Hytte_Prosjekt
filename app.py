@@ -9,6 +9,7 @@ from flask_login import LoginManager
 from models import User
 from database import db
 from forms import LoginForm
+from roles import ROLES
 
 # Blueprints imports
 from blueprints.login_py import LOGIN, initialize_login_manager
@@ -24,7 +25,7 @@ from blueprints.admin import ADMIN
 from blueprints.sok_etter_adresse import SOK_ADRESSE
 from blueprints.set_password import SET_PASSWORD
 from blueprints.calendar import CALENDAR
-
+from blueprints.sok_postnummer_poststed import POSTNUMMER_TESTING
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -84,6 +85,10 @@ app.register_blueprint(ORDERS)
 # Admin page
 app.register_blueprint(ADMIN)
 
+# TESTING TESTING
+app.register_blueprint(POSTNUMMER_TESTING)
+# TESTING TESTING
+
 # Søk adresse
 app.register_blueprint(SOK_ADRESSE)
 
@@ -107,4 +112,4 @@ def internal_server_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host= '192.168.39.202')
+    app.run(debug=True, host= '192.168.39.203')

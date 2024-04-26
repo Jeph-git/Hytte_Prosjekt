@@ -5,14 +5,17 @@ from flask_login import login_required, current_user
 import urllib.parse
 import requests
 from models import Address
+from utils import role_required, ROLES
 
 SOK_ADRESSE = Blueprint('sok_adresse', __name__)
 
 @SOK_ADRESSE.route('/sok_adresse')
+@role_required(ROLES[1], ROLES[2])
 @login_required
 def sok_adresse():
+    title = 'Legg til adresse'
     form = AddressForm()
-    return render_template('sok_adresse.html', form=form, active_page='adresse')
+    return render_template('sok_adresse.html', form=form, active_page='adresse', title=title)
 
 @SOK_ADRESSE.route('/process_address')
 def process_address():
@@ -21,7 +24,7 @@ def process_address():
     adressetekstForm = address_dict.get('adressetekst')
     postnummerForm = address_dict.get('postnummer')
     poststedForm = address_dict.get('poststed')
-    # Accessing nested keys
+    # Få tilgang til nøstede nøkler
     representasjonspunkt = address_dict.get('representasjonspunkt', {})
     lonForm = representasjonspunkt.get('lon')
     latForm = representasjonspunkt.get('lat')

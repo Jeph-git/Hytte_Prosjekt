@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Fetch Addresses</h2>
+  <form method="POST" action="{{ url_for('testing.fetch_addresses') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ form.poststed.label }} {{ form.poststed(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.postnummer.label }} {{ form.postnummer(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+  </form>
+{% endblock %}

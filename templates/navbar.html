@@ -6,7 +6,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 {% if current_user.is_authenticated %}
@@ -93,6 +93,10 @@
                     <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_customer') }}">Registrer customer</a>
                 </li>
                 
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_plowman') }}">Registrer Plowman</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}">Admin</a>
                 </li>

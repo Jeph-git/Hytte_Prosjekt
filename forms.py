@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, PasswordField, BooleanField, DateField, ValidationError
+from wtforms import StringField, SubmitField, IntegerField, PasswordField, BooleanField, DateField, ValidationError, SelectField, SelectMultipleField, FieldList
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
 
@@ -17,10 +17,25 @@ class RegisterForm(FlaskForm):
     confirmPassword = PasswordField('Bekreft Passord', validators=[DataRequired()])
     submit = SubmitField('Registrer')
 
-# Registrer ordfører OG Hytteeier
+# Registrer ordfører 
 class RegisterGovernorForm(FlaskForm):
     phoneNumber = StringField('Telefonnummer', validators=[DataRequired()], render_kw={"type": "tel"})
     email = StringField('E-postadresse', validators=[DataRequired(), Email()])
+    customer = SelectField('Kunde', coerce=int)  
+    submit = SubmitField('Registrer')
+
+class RegisterPlowmanForm(FlaskForm):
+    phoneNumber = StringField('Telefonnummer', validators=[DataRequired()], render_kw={"type": "tel"})
+    email = StringField('E-postadresse', validators=[DataRequired(), Email()])
+    customer = SelectMultipleField('Kunde', coerce=int)  
+    # customer = FieldList(BooleanField('Kunde'), min_entries=1)  
+    submit = SubmitField('Registrer')
+
+class RegisterUserForm(FlaskForm):
+    phoneNumber = StringField('Telefonnummer', validators=[DataRequired()], render_kw={"type": "tel"})
+    email = StringField('E-postadresse', validators=[DataRequired(), Email()])
+    poststed = StringField('Poststed', validators=[DataRequired()])
+    postnummer = StringField('Postnummer', validators=[DataRequired()])
     submit = SubmitField('Registrer')
 
 class RegisterCustomer(FlaskForm):
@@ -48,4 +63,13 @@ class AddressForm(FlaskForm):
     submit = SubmitField('Søk')
 
 
+class AddressFormTESTING(FlaskForm):
+    poststed = StringField('Poststed', validators=[DataRequired()])
+    postnummer = StringField('Postnummer', validators=[DataRequired()])
+    submit = SubmitField('Fetch Addresses')
 
+
+
+class SelectCustomer(FlaskForm):
+    customer = SelectField('Kunde', coerce=int)  
+    submit = SubmitField('Registrer')

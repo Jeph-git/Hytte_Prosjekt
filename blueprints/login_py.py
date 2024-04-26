@@ -11,10 +11,9 @@ login_manager = LoginManager()
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# This function returns the login_manager object
 def initialize_login_manager(app):
     login_manager.init_app(app)
-    login_manager.login_view = 'login.login'  # Assuming your login route is named 'login.login'
+    login_manager.login_view = 'login.login'  
     return login_manager
 
 # Feilmelding for når man ikke er logget inn
@@ -30,10 +29,11 @@ def login():
     title='Login - Brøyting.net'
     form = LoginForm()
 
-    # Check if phone number query parameter exists
+
     phoneNumber = request.args.get('phoneNumber', '')
 
-    # Pre-fill phone number field if it exists
+
+    # Fyller ut telefonnummerfeltet hvis det eksisterer
     if phoneNumber:
         form.phoneNumber.data = phoneNumber
     
@@ -43,7 +43,7 @@ def login():
             if user:
                 if user.password_hash:
                     if user.check_password(form.password.data):
-                        remember = form.remember_me.data  # Check if "Remember Me" checkbox is checked
+                        remember = form.remember_me.data  # Sjekk om brukeren vil bli husket
                         print(remember)
                         login_user(user, remember=remember)
                         '''
@@ -55,7 +55,7 @@ def login():
                     else:
                         flash('Feil passord', 'danger')
                 else:
-                    flash('Du må sette opp passord', 'danger')  # Inform user to set up password
+                    flash('Du må sette opp passord', 'danger') 
             else:
                 flash('Ingen konto registrert med dette telefonnummeret', 'danger')
         else:
