@@ -128,18 +128,6 @@ class Customer(db.Model):
     enable_public_view = db.Column(db.Boolean, default=False, nullable=False)
     use_points = db.Column(db.Boolean)
 
-class Unit_Customer(db.Model):
-    __tablename__ = 'unit_customer'
-    unit_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
-
-
-class Unit_Sector(db.Model):
-    __tablename__ = 'unit_sector'
-    unit_id = db.Column(db.Integer, db.ForeignKey('unit_customer.unit_id'), primary_key=True)
-    sector_id = db.Column(db.Integer)
-
-
 
 class User_Customer(db.Model):
     __tablename__ = 'user_customer'

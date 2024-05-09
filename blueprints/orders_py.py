@@ -4,7 +4,6 @@ from flask_login import current_user, login_required
 from database import db
 from utils import role_required, ROLES
 from forms import SelectCustomer
-# from roles import ROLES
 
 ORDERS = Blueprint('orders', __name__)
 
@@ -13,14 +12,15 @@ ORDERS = Blueprint('orders', __name__)
 @role_required(ROLES[1], ROLES[2], ROLES[3])
 @login_required
 def orders():
-
     title = 'Bestillinger - Brøyting.net'
-    if current_user.role == ROLES[2] or ROLES[0]: # cabin_owner
+    if current_user.role == 'cabin_owner': # cabin_owner
         # Får alle bestillinger som samsvarer med ID'en til den påloggede
         active_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=True).all()
 
         history_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=False).all()
+        
 
+    
         return render_template(
             'orders_html.html',
             title=title,
@@ -28,12 +28,13 @@ def orders():
             active_orders = active_orders,
             history_orders = history_orders,
         )
-    elif current_user.role == ROLES[1]: # Governor
+    if current_user.role == 'governor': # Governor
         #  Finner alle ID'ene i governor_user som er linket til den påloggede governor
         governor_user_ids = Governor_User.query.filter_by(governor_id=current_user.id).all()
 
         user_ids = [governor_user.user_id for governor_user in governor_user_ids]
 
+        
         active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
 
         history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
@@ -45,7 +46,7 @@ def orders():
             history_orders = history_orders,
         )
     
-    elif current_user.role == ROLES[3]:  # Plowman
+    if current_user.role == 'plowman':  # Plowman
         title = 'Bestillinger'
         form = SelectCustomer()
 

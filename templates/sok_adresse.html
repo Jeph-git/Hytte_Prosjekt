@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  .searchResults {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* Change the background color as needed */
+    z-index: 999; /* Set a higher z-index to ensure it appears above other elements */
+  }
+</style>
 <div class="container">
-
 
   <div class="container">
     <h1 class="text-center mt-5">Legg til adresse</h1>
@@ -19,7 +28,7 @@
     </button>
   </div>
 {% endfor %}
-  <form method="POST" action="{{ url_for('sok_adresse.search_address') }}">
+  <form method="POST" action="{{ url_for('sok_adresse.search_address') }}" id="search-form">
     {{ form.hidden_tag() }}
     <div class="form-group">
       {{ form.query.label(for="address-input") }}
@@ -28,17 +37,36 @@
     {{ form.submit(class="btn btn-primary") }}
   </form>
 
-  <div id="search-results" class="mt-3">
-    {% if addresses %}
-    <ul class="list-group">
-      {% for address in addresses %}
-      <li class="list-group-item">
-        <a href="{{ url_for('sok_adresse.process_address', address_data=address) }}" class="address-link">{{ address.adressetekst }}, {{ address.postnummer }}, {{ address.poststed }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </div>
+  <div class="searchResults mt-3"></div> 
 </div>
+
+<div class="container">
+  <h2>Test text lalala</h2>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#address-input').on('input', function() {
+        var query = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: '/search', // Route to handle the AJAX request
+            data: {'query': query},
+            success: function(response) {
+                var inputOffset = $('#address-input').offset();
+                $('.searchResults').html(response).css({
+                    'top': inputOffset.top + $('#address-input').outerHeight(),
+                    'left': inputOffset.left,
+                    'width': $('#address-input').outerWidth()
+                }).show(); // Update the search results div and position it relative to the input field
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

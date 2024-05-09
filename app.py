@@ -112,4 +112,5 @@ def internal_server_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host= '192.168.39.203')
+    # app.run(debug=True, host= '192.168.39.203') 
+    app.run(debug=True) # Denne funker med current position

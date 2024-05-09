@@ -50,8 +50,8 @@ def generate_token(user_id):
 
 def send_token(user, token):
     # print(f'Token: {token}')
-    print(f"Sample URL: http://192.168.39.203:5000/set_password/{token}")
-
+    print(f"Sample URL: http://127.0.0.1:5000/set_password/{token}")
+    
 
 def verify_token(token):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])

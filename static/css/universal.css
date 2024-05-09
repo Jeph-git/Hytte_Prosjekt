@@ -1,8 +1,30 @@
     /* Styling for the map to work DONT REMOVE*/
-    #map {
+    #map_v1 {
         position: relative;
         border-radius: 8px;
-        height: 400px;  
+        height: 600px;  
         width: 100%;  
         }
+
+
+    #map {
+        position: fixed;
+        top: 66px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
     
+    .map-buttons { 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: auto !important;
+    }
+
+    .map-form {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        max-width: 300px;
+    }

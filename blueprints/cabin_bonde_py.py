@@ -1,14 +1,19 @@
+import urllib
 from flask import Flask, Blueprint, session, render_template, request, flash, redirect, url_for
 from flask_login import current_user
 import requests
 from database import db
-from models import User, Bestilling
+from models import User, Bestilling, Address, User_Customer, Customer
 from flask_login import login_required
 from utils import role_required, ROLES
+import json
+from datetime import datetime
+from babel.dates import format_datetime
+from flask_babel import _
 
 CABIN_BONDE = Blueprint('cabin_bonde', __name__)
 
-@CABIN_BONDE.route('/cabin_bonde',methods=['POST','GET'])
+@CABIN_BONDE.route('/cabin_bonde', methods=['POST','GET'])
 @role_required(ROLES[3])
 @login_required
 def cabin_bonde():
@@ -16,22 +21,59 @@ def cabin_bonde():
         message = request.form.get('melding')
         tlfNummer = current_user.phoneNumber
         adresse = session.get('adresse')
-        order = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=True).first()
 
-        data = {
-            'input': f"{adresse} er brøytet*$*$*{message}*$*$*{tlfNummer}"
-        }
-        response = requests.post('https://nabohund.no/plowman_cabin/plowman_cabin.php', data=data)
-
-
-        if response.ok:
-            flash('Brøytet ferdig: Registrert', 'success')
-            order.mark_order_as_finished()
-            return redirect(url_for('map.map'))
-        else:
-            flash('Brøytet ferdig: Feil', 'danger')
-            return redirect(url_for('map.map'))
         
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp_datetime = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+        formatted_datetime = format_datetime(timestamp_datetime, "d. MMMM yyyy 'kl.' HH:mm", locale='nb_NO')
+
+
+
+        default_message = f"Vi har brøytet til din hytte {adresse} i dag {formatted_datetime} vennlig hilsen Plowman"
+
+
+
+        address = Address.query.filter_by(address=adresse).first()
+        user = User.query.filter_by(id=address.user_id).first()
+
+
+        user_customer_association = User_Customer.query.filter_by(user_id=user.id).first()
+
+
+        customer = Customer.query.filter_by(id=user_customer_association.customer_id).first() if user_customer_association else None
+
+        order = Bestilling.query.filter_by(bestillings_id=user.id, order_pending=True).first()
+
+ 
+        data = {
+            'phone': str(tlfNummer),
+            'message_from_plowman': str(message),
+            'timestamp': str(timestamp),
+            'plowman': 'Plowman',
+            'default_message': str(default_message),
+            'cabin_area': str('b'),
+        }
+
+        json_data = json.dumps(data, ensure_ascii=False)
+    
+
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post('https://nabohund.no/plowman_cabin/test.php', data=json_data, headers=headers)
+
+        data_encoded = urllib.parse.urlencode(data)
+        print(data_encoded)
+
+        print(response.status_code)
+        print(response.text)
+        return response.text
+        # if response.ok: 
+        #     # flash('Brøytet ferdig: Registrert', 'success')
+        #     order.mark_order_as_finished()
+        #     return redirect(url_for('map.map'))
+        # else:
+        #     # flash('Brøytet ferdig: Feil', 'danger')
+        #     return redirect(url_for('map.map'))
+
     else:
         title = 'Bestill - Brøyting.net'
         adresse = request.args.get('adresse')
@@ -39,4 +81,5 @@ def cabin_bonde():
         postnummer = request.args.get('postnummer')
         session['adresse'] = adresse
 
-        return render_template('plwman_cabin_bonde.html', adresse = adresse, poststed = poststed, postnummer=postnummer,title=title, FORM=True)
+        return render_template('plwman_cabin_bonde.html', adresse=adresse, poststed=poststed, postnummer=postnummer, title=title, FORM=True)
+        

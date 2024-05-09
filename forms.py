@@ -34,8 +34,13 @@ class RegisterPlowmanForm(FlaskForm):
 class RegisterUserForm(FlaskForm):
     phoneNumber = StringField('Telefonnummer', validators=[DataRequired()], render_kw={"type": "tel"})
     email = StringField('E-postadresse', validators=[DataRequired(), Email()])
-    poststed = StringField('Poststed', validators=[DataRequired()])
-    postnummer = StringField('Postnummer', validators=[DataRequired()])
+    addressText = StringField('Adresse', validators=[DataRequired()])
+    postPlace = StringField('Poststed', validators=[DataRequired()])
+    zipCode = StringField('Postnummer', validators=[DataRequired()])
+    # Make hidden form fields
+    latitude = StringField('Latitude', validators=[DataRequired()])
+    longitude = StringField('Longitude', validators=[DataRequired()])
+
     submit = SubmitField('Registrer')
 
 class RegisterCustomer(FlaskForm):

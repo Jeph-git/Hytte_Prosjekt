@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash  # Use secure password hashing
 from database import db
-from models import User, Customer, User_Customer, Governor_User, Governor_Plowman, User_Customer, Address
+from models import User, Customer, User_Customer, Governor_User, Governor_Plowman, User_Customer
 from forms import RegisterForm, RegisterGovernorForm, RegisterCustomer, RegisterUserForm, RegisterPlowmanForm
 from utils import generate_token, send_token
 import requests, urllib.parse
@@ -33,7 +33,6 @@ def register():
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
     return render_template('register_html.html', form=form, title=title)
 
-@login_required
 @REGISTER.route('/register_governor', methods=['POST', 'GET'])
 def register_governor():
     title='Registrer Ordfører'
@@ -77,7 +76,6 @@ def register_governor():
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
     return render_template('register_governor.html', form=form, title=title, role='ordfører')
 
-@login_required
 @REGISTER.route('/register_user', methods=['POST', 'GET'])
 def register_user():
     title = 'Registrer Bruker'
@@ -92,22 +90,15 @@ def register_user():
                 # Check if email is already registered
                 email_user = User.query.filter_by(email=form.email.data).first()
                 if email_user:
-                    flash('Email is already registered.', 'danger')
+                    flash('Email is already registered.')
                     return redirect(url_for('register.register_user'))
                 else:
-                    address = form.addressText.data
-                    zip_code = form.zipCode.data
-                    postplace = form.postPlace.data
-                    latitude = form.latitude.data
-                    longitude = form.longitude.data
-                    
-           
                     # Legger til ny bruker
                     new_user = User(phoneNumber=form.phoneNumber.data)
                     new_user.add_email(form.email.data)
                     new_user.role = 'cabin_owner'
                     db.session.add(new_user)
-                    # db.session.commit()
+                    db.session.commit()
 
                     # Hent kunden tilknyttet formannen (governor)
                     governor_customer_id = User_Customer.query.filter_by(user_id=current_user.id).first().customer_id
@@ -124,20 +115,8 @@ def register_user():
                         user_id=new_user.id,
                         customer_id=governor_customer_id
                     )
-
                     db.session.add(user_customer)
 
-                    # db.session.commit()
-                    new_address = Address(
-                        address=address,
-                        postnummer=zip_code,
-                        poststed=postplace,
-                        latitude=latitude,
-                        longitude=longitude,
-                        user_id=new_user.id
-                    )
-
-                    db.session.add(new_address)
                     db.session.commit()
 
                     # Generer token
@@ -145,7 +124,7 @@ def register_user():
 
                     # Send token til bruker
                     send_token(new_user, token)
-           
+
                     flash('Hytteeier registrert.', 'success')
                     return redirect(url_for('register.register_user'))
         else:
@@ -155,7 +134,7 @@ def register_user():
 
 
 
-@login_required
+
 @REGISTER.route('/register_customer', methods=['POST', 'GET'])
 def register_customer():
     title = 'Registrer Kunde'
@@ -172,7 +151,7 @@ def register_customer():
     return render_template('register_customer.html', form=form, title=title)
 
 
-@login_required
+
 @REGISTER.route('/register_plowman', methods=['POST', 'GET'])
 def register_plowman():
     title = 'Registrer Plowman'

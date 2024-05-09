@@ -8,7 +8,6 @@ from forms import SelectCustomer
 [{'title': 'Hytteeier 124', 'start': '2024-04-25', 'end': '2024-04-26', 'userId': 124, 'message': '22 Test - KUNDE: GEILO', 'address': 'Slottsplassen 1', 'postnummer': '0010', 'poststed': 'OSLO'}, 
 {'title': 'Hytteeier 126', 'start': '2024-04-26', 'end': '2024-04-27', 'userId': 126, 'message': 'KUNDE:; HEMSEDAL\r\n', 'address': 'Tåsenveien 131B', 'postnummer': '0880', 'poststed': 'OSLO'}, 
 {'title': 'Hytteeier 126', 'start': '2024-04-26', 'end': '2024-05-05', 'userId': 126, 'message': 'azfazxfa', 'address': 'Tåsenveien 131B', 'postnummer': '0880', 'poststed': 'OSLO'}]
-
 '''
 
 
