@@ -51,21 +51,18 @@ def cabin_bonde():
             'timestamp': str(timestamp),
             'plowman': 'Plowman',
             'default_message': str(default_message),
-            'cabin_area': str('b'),
+            'cabin_area': str(customer.name),
         }
 
-        json_data = json.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data)
     
 
         headers = {'Content-Type': 'application/json'}
-        response = requests.post('https://nabohund.no/plowman_cabin/test.php', data=json_data, headers=headers)
-
-        data_encoded = urllib.parse.urlencode(data)
-        print(data_encoded)
-
-        print(response.status_code)
-        print(response.text)
+        print(f'json_data: {json_data}')
+        response = requests.post('https://nabohund.no/plowman_cabin/plowman_cabin.php', data=json_data, headers=headers)
         return response.text
+        
+        
         # if response.ok: 
         #     # flash('Brøytet ferdig: Registrert', 'success')
         #     order.mark_order_as_finished()
