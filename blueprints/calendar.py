@@ -20,19 +20,37 @@ def display_calendar():
     title = 'Kalender'
     customer_count = len(User_Customer.query.filter_by(user_id=current_user.id).all())
     
-    selected_customer_id = None
-    if customer_count > 0:
-
-        selected_customer_id = User_Customer.query.filter_by(user_id=current_user.id).first().customer_id
-    
-    events = []
     form = SelectCustomer()
+
+
+    # Get all User_Customer records excluding the current user
+    user_customers = User_Customer.query.filter(User_Customer.user_id != current_user.id).all()
+
+    # Get all customer IDs from the User_Customer records
+    customer_ids = [user_customer.customer_id for user_customer in user_customers]
+
+    # Get all customers that are linked to the current user
     customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
+
+    # Filter out customers that are only linked to the current user
+    customers = [customer for customer in customers if customer.id in customer_ids]
+
+    # Update the form choices
     form.customer.choices = [(customer.id, customer.name) for customer in customers]
 
     if form.validate_on_submit():
         selected_customer_id = form.customer.data
+        session['selected_customer_id'] = selected_customer_id
+    else:
+        print(session.get('selected_customer_id'))
+        selected_customer_id = session.get('selected_customer_id')
+        # If there is no value stored in the session, default to the first customer in the choices
+        if not selected_customer_id and customers:
+            selected_customer_id = customers[0].id
 
+    form.customer.data = selected_customer_id
+
+    events = []
     if selected_customer_id:
 
         user_ids = [uc.user_id for uc in User_Customer.query.filter_by(customer_id=selected_customer_id).all()]
@@ -56,7 +74,8 @@ def display_calendar():
                     })
 
     for event in events:
-        event['message'] = event['message'].replace('\r\n', '')
+        if event['message']:
+            event['message'] = event['message'].replace('\r\n', '')
         
     return render_template('calendar.html', events=events, active_page='calendar', title=title, form=form)
 

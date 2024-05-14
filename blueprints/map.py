@@ -42,6 +42,7 @@ def map():
     else:
         # If the form has not been submitted or if there was a validation error,
         # try to get the selected customer from the session
+        print(session.get('selected_customer_id'))
         selected_customer_id = session.get('selected_customer_id')
         # If there is no value stored in the session, default to the first customer in the choices
         if not selected_customer_id and customers:
@@ -56,24 +57,6 @@ def map():
 
     addresses = Address.query.filter(Address.user_id.in_(user_ids)).all()
 
-    center = [60.391564, 5.961366]  # Default value
-    if addresses:
-        avg_lat = sum(address.latitude for address in addresses) / len(addresses)
-        avg_lon = sum(address.longitude for address in addresses) / len(addresses)
-        center = [avg_lat, avg_lon]
-
-    if len(addresses) == 1:
-        zoom = 10
-    else:
-        zoom = 6.4
-
-    config = {
-    "initialView": {
-        "center": center,
-        "zoom": zoom
-    }
-}
-
     markers = []
     for address in addresses:
         order_pending_list = []
@@ -84,6 +67,8 @@ def map():
                 message = bestilling.melding
                 order_messages.append(message) 
                 order_pending_list.append(bestilling.order_pending)
+            
+                has_message = len(message) > 0 if message is not None else False
 
         markers.append({
             'adressetekst': address.address,
@@ -94,10 +79,12 @@ def map():
                 'lon': address.longitude
             },
             'order_pending': order_pending_list ,
-            'message' : order_messages
+            'message' : order_messages,
+            'hasMessage': has_message,
         })
-
+    print(order_pending_list)
+    
     with open('map/config_kvam.json', encoding='utf-8') as config_file:
         config_data = json.load(config_file)
 
-    return render_template('map.html', config=config, markers=markers, active_page='map', title=title, form=form)
+    return render_template('map.html', markers=markers, active_page='map', title=title, form=form)
