@@ -115,7 +115,8 @@
     markers.forEach(function(marker) {
       var latlng = [marker.representasjonspunkt.lat, marker.representasjonspunkt.lon];
     
-      var popupContent = "Adresse: " + marker.adressetekst + "<br>" +
+      var popupContent = "Telefonnummer: " + encodeURIComponent(marker.phone) + "<br>" +
+          "Adresse: " + marker.adressetekst + "<br>" +
           "Poststed: " + marker.poststed + "<br>" +
           "Postnummer: " + marker.postnummer + "<br>" +
           "Melding: " + marker.message + "<br>" + 
@@ -124,6 +125,7 @@
           '&postnummer=' + encodeURIComponent(marker.postnummer) +
           '&message=' + encodeURIComponent(marker.message) +
           '">Brøytet ferdig</a>';
+      
     
       var iconUrl = getIconUrl(marker.order_pending, marker.hasMessage); // Pass hasMessage to the function
       var customIcon = new L.Icon({

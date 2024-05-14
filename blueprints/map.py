@@ -18,6 +18,8 @@ def map():
     title = 'Kart - Brøyting.net'
     form = SelectCustomer()
 
+    
+
     # Get all User_Customer records excluding the current user
     user_customers = User_Customer.query.filter(User_Customer.user_id != current_user.id).all()
 
@@ -57,12 +59,16 @@ def map():
 
     addresses = Address.query.filter(Address.user_id.in_(user_ids)).all()
 
+
+
     markers = []
     for address in addresses:
         order_pending_list = []
         order_messages = []
         user = User.query.get(address.user_id)
         if user:
+            # Get phonenumber
+            phone = user.phoneNumber
             for bestilling in user.bestillinger:
                 message = bestilling.melding
                 order_messages.append(message) 
@@ -81,9 +87,10 @@ def map():
             'order_pending': order_pending_list ,
             'message' : order_messages,
             'hasMessage': has_message,
+            'phone': phone,
         })
     print(order_pending_list)
-    
+
     with open('map/config_kvam.json', encoding='utf-8') as config_file:
         config_data = json.load(config_file)
 

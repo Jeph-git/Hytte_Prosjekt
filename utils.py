@@ -2,7 +2,7 @@ from functools import wraps
 from flask import redirect, url_for, current_app
 from flask_login import current_user
 import time
-
+from models import User_Customer, Customer
 
 # ROLE REQUIRED LOGIC
 
@@ -76,3 +76,8 @@ def timeit(func):
         print(f'Function {func.__name__}{args} {kwargs} Took {total_time:.4f} seconds')
         return result
     return timeit_wrapper
+
+
+if __name__ == '__main__':
+    print(generate_token(1))
+    print(verify_token('eyJhbGciOiJIUzI1NiIsImV4cCI6MTYzNzI4NjQyNiwiaWF0IjoxNjM3Mjg2MzY2fQ.eyJpZCI6MX0.4hJ9jG3Z9Q6x2c5QdZmZ6GwFzqC4XzJH1Ks0bXtVQ0Q'))

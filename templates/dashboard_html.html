@@ -21,17 +21,6 @@
         </div>    
       </div>
 
-      <!-- calendar container -->
-      <div class="col-md-6">
-        <div class="card m-1">
-          <div class="card-body">
-            <h5 class="card-title">Kalender</h5>
-            <p class="card-text">Se oversikt.</p>
-            <a href="{{ url_for('calendar.display_calendar') }}" class="btn btn-outline-primary">Se kalender</a>
-          </div>
-        </div> 
-      </div>
-
       <!-- orders container -->
       <div class="col-md-6">
         <div class="card m-1">
@@ -42,6 +31,18 @@
           </div>
         </div> 
       </div>
+
+      <!-- calendar container -->
+      <div class="col-md-6">
+        <div class="card m-1">
+          <div class="card-body">
+            <h5 class="card-title">Kalender</h5>
+            <p class="card-text">Se oversikt.</p>
+            <a href="{{ url_for('calendar.display_calendar') }}" class="btn btn-outline-primary">Se kalender</a>
+          </div>
+        </div> 
+      </div>
+      
     </div>
   </div>
   {% endif %}
@@ -67,7 +68,7 @@
           <div class="card-body">
             <h5 class="card-title">Registrer hytteeier</h5>
             <p class="card-text">Se oversikt.</p>
-            <a href="{{ url_for('sok_adresse.sok_adresse') }}" class="btn btn-outline-primary">Legg til adresse</a>
+            <a href="{{ url_for('register.register_user') }}" class="btn btn-outline-primary">Legg til adresse</a>
           </div>
         </div> 
       </div>

@@ -150,7 +150,7 @@ def register_user():
                     return redirect(url_for('register.register_user'))
         else:
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
-    return render_template('register_users.html', form=form, title=title, role='user')
+    return render_template('register_users.html', form=form, title=title, role='user', active_page = 'register_user')
 
 
 
