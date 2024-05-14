@@ -48,23 +48,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script> <!-- Add Leaflet library -->
 <script>
-  function getIconUrl_V1(orderPending, hasMessage) {
-    if (hasMessage) {
-      // return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'; // Grey icon for markers with a message
-      return 'static/img/marker-icon-w-email.png';
-    } else {
-      for (let i of orderPending) {
-        if (i === true) {
-          // return 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon.png'; // Blue icon for pending order
-          return 'static/img/marker-icon.png';
-        }
-      }
-      return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'; // Green icon for no pending order
-    }
-  }
-
-
-
   function getIconUrl(orderPending, hasMessage) {
     if (orderPending[0] && hasMessage) {
       return 'static/img/marker-icon-w-email.png';
@@ -78,7 +61,6 @@
     }
   }
 
-  
 
   function initMap() {
     var map = L.map('map');
