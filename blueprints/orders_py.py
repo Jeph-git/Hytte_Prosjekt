@@ -80,17 +80,9 @@ def display_orders():
     title = 'Bestillinger'
     form = SelectCustomer()
 
-
-    # Get all User_Customer records excluding the current user
     user_customers = User_Customer.query.filter(User_Customer.user_id != current_user.id).all()
-
-    # Get all customer IDs from the User_Customer records
     customer_ids = [user_customer.customer_id for user_customer in user_customers]
-
-    # Get all customers that are linked to the current user
     customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
-
-    # Filter out customers that are only linked to the current user
     customers = [customer for customer in customers if customer.id in customer_ids]
 
     # Update the form choices
@@ -102,7 +94,6 @@ def display_orders():
     else:
         print(session.get('selected_customer_id'))
         selected_customer_id = session.get('selected_customer_id')
-        # If there is no value stored in the session, default to the first customer in the choices
         if not selected_customer_id and customers:
             selected_customer_id = customers[0].id
 

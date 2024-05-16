@@ -11,8 +11,6 @@
 </div>
 {% endfor %}
 
-<h1 class="text-center mt-5">Oversikt over Hytter:</h1>
-<p class="text-center"><span class="text-success">Grønt </span>ikon betyr ferdig brøytet. <span class="text-primary">Blått </span>ikon betyr bestilt brøyting. <span class="text-secondary">Grått </span>ikon betyr inaktiv hytte</p>
 
 <!-- Map Container -->
 <div class="container" style="width:100vw;">
@@ -36,10 +34,10 @@
   </div>
 </div>
 
-<div class="btn-group mt-5 ml-2 mr-2 map-buttons">     
-  <button id="bbox-blue" class=" btn btn-sm btn-primary mb-2 text-nowrap">Se aktive adresser</button>
-  <button id="bbox-all" class=" btn btn-sm btn-primary mb-2 text-nowrap">Se alle adresser</button>
-  <button id="current-position" class=" btn btn-sm btn-primary mb-2 text-nowrap">Nåværende posisjon</button>
+<div class="btn-group mt-5 ml-2 mr-2 map-buttons ">     
+  <button id="bbox-blue" class=" btn btn-sm btn-primary mb-2 text-nowrap">Aktive</button>
+  <button id="bbox-all" class=" btn btn-sm btn-primary mb-2 text-nowrap">Alle adresser</button>
+  <button id="current-position" class=" btn btn-sm btn-primary mb-2 text-nowrap">Min posisjon</button>
 </div>
 
 <!-- Current Position Info -->
@@ -69,10 +67,9 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Check if the browser supports the Geolocation API
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            // Create a marker at the user's location and add it to the map
+          
             L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         }, function(error) {
             console.error('Error getting location', error);
@@ -100,16 +97,15 @@
     var points = turf.multiPoint(coordinates);
     var bbox = turf.bbox(points);
 
-    // Create a LatLngBounds object using the coordinates from bbox
     var bounds = L.latLngBounds(
         L.latLng(bbox[1], bbox[0]),
         L.latLng(bbox[3], bbox[2])
     );
 
-    // Add a 10% padding to the bounds
+    
     var paddedBounds = bounds.pad(0.1);
 
-    // Fly to the padded bounds
+    
     map.fitBounds(paddedBounds, {duration: 0.5});
 
     markers.forEach(function(marker) {
@@ -127,7 +123,8 @@
           '">Brøytet ferdig</a>';
       
     
-      var iconUrl = getIconUrl(marker.order_pending, marker.hasMessage); // Pass hasMessage to the function
+      var iconUrl = getIconUrl(marker.order_pending, marker.hasMessage); 
+      
       var customIcon = new L.Icon({
           iconUrl: iconUrl,
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -141,7 +138,7 @@
     });
   
 
-    // Event listeners for buttons
+    
     document.getElementById('bbox-blue').addEventListener('click', function() {
       var blueMarkers = markers.filter(function(marker) {
         return marker.order_pending.includes(true);
@@ -154,16 +151,16 @@
         var bluePoints = turf.multiPoint(blueCoordinates);
         var blueBbox = turf.bbox(bluePoints);
 
-        // Create a LatLngBounds object using the coordinates from blueBbox
+        
         var bounds = L.latLngBounds(
           L.latLng(blueBbox[1], blueBbox[0]),
           L.latLng(blueBbox[3], blueBbox[2])
         );
 
-        // Add a 10% padding to the bounds
+        
         var paddedBounds = bounds.pad(0.1);
 
-        // Fly to the padded bounds
+        
         map.flyToBounds(paddedBounds, {duration: 0.5});
 
       }
@@ -176,16 +173,16 @@
       var allPoints = turf.multiPoint(allCoordinates);
       var allBbox = turf.bbox(allPoints);
 
-      // Create a LatLngBounds object using the coordinates from allBbox
+      
       var bounds = L.latLngBounds(
         L.latLng(allBbox[1], allBbox[0]),
         L.latLng(allBbox[3], allBbox[2])
       );
 
-      // Add a 10% padding to the bounds
+     
       var paddedBounds = bounds.pad(0.1);
 
-      // Fly to the padded bounds
+     
       map.flyToBounds(paddedBounds, {duration: 0.5});
     });
 
