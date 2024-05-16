@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, session, redirect, url_for, render_template,
 from models import User, Bestilling, Customer, User_Customer, Governor_User, Governor_Plowman
 from flask_login import current_user, login_required
 from database import db
-from utils import role_required, ROLES, get_linked_customers
+from utils import role_required, ROLES
 from forms import SelectCustomer
 
 ORDERS = Blueprint('orders', __name__)

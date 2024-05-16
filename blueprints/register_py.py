@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, current_user
 from werkzeug.security import generate_password_hash  # Use secure password hashing
 from database import db
-from models import User, Customer, User_Customer, Governor_User, Governor_Plowman, User_Customer, Address
+from models import User, Customer, User_Customer, Governor_User, User_Customer, Address
 from forms import RegisterForm, RegisterGovernorForm, RegisterCustomer, RegisterUserForm, RegisterPlowmanForm
 from utils import generate_token, send_token
-import requests, urllib.parse
+
 
 REGISTER = Blueprint('register', __name__)
 
@@ -142,11 +142,9 @@ def register_user():
 
                     # Generer token
                     token = generate_token(new_user.id)
-
-                    # Send token til bruker
-                    send_token(new_user, token)
+                    password_set_url = send_token(new_user, token)
            
-                    flash('Hytteeier registrert.', 'success')
+                    flash(f'Hytteeier registrert. <a href="/{password_set_url}" class="alert-link">here</a>', 'success')
                     return redirect(url_for('register.register_user'))
         else:
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')

@@ -50,7 +50,7 @@ def generate_token(user_id):
 
 def send_token(user, token):
     # print(f'Token: {token}')
-    print(f"Sample URL: http://127.0.0.1:5000/set_password/{token}")
+    return f"/set_password/{token}"
     
 
 def verify_token(token):
