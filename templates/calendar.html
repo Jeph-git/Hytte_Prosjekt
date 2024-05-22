@@ -108,8 +108,8 @@
       let modalBody = document.querySelector('#orderModal .modal-body');
       modalBody.innerHTML = `
           <p><strong>Bruker ID:</strong> ${userId}</p>
-          <p><strong>Melding:</strong> ${message}</p>
           <p><strong>Addresse:</strong> ${address}, ${postnummer} ${poststed}</p>
+          <p><strong>Melding:</strong> ${message}</p>
       `;
 
       $('#orderModal').modal('show');
