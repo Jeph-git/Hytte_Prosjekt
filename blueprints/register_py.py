@@ -70,8 +70,10 @@ def register_governor():
                 )
                 db.session.add(user_customer)
                 db.session.commit()
-                
-                flash('Ordfører registrert.', 'success')
+                token = generate_token(new_user.id)
+                password_set_url = send_token(new_user, token)
+                flash(f'Ordfører registrert. Oppsett av passord er sendt til TLF.\nSett passord <a href="/{password_set_url}" class="alert-link">her</a>', 'success')
+                # flash('Ordfører registrert.', 'success')
                 return redirect(url_for('register.register_governor'))
         else:
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
@@ -144,7 +146,7 @@ def register_user():
                     token = generate_token(new_user.id)
                     password_set_url = send_token(new_user, token)
            
-                    flash(f'Hytteeier registrert. <a href="/{password_set_url}" class="alert-link">here</a>', 'success')
+                    flash(f'Hytteeier registrert. Oppsett av passord er sendt til TLF.\nSett passord <a href="/{password_set_url}" class="alert-link">her</a>', 'success')
                     return redirect(url_for('register.register_user'))
         else:
             flash('Vennligst skriv inn et gyldig telefonnummer.', 'danger')
@@ -204,7 +206,12 @@ def register_plowman():
                     db.session.add(user_customer)
 
                 db.session.commit()
-                flash('Plowman registrert.', 'success')
+                                    # Generer token
+                token = generate_token(new_user.id)
+                password_set_url = send_token(new_user, token)
+           
+                flash(f'Plowman registrert. Oppsett av passord er sendt til TLF.\nSett passord <a href="/{password_set_url}" class="alert-link">her</a>', 'success')
+                # flash('Plowman registrert.', 'success')
                 return redirect(url_for('register.register_plowman'))
 
         else:

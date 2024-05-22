@@ -38,7 +38,7 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6"> 
           {% for type, message in get_flashed_messages(with_categories=true) %}
           <div class="alert {% if type == 'success' %}alert-success{% elif type == 'danger' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
-            {{ message }}
+            {{ message | safe}}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

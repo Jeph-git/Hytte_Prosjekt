@@ -45,6 +45,7 @@ def login():
                     if user.check_password(form.password.data):
                         remember = form.remember_me.data  # Sjekk om brukeren vil bli husket
                         print(remember)
+                        session.clear()
                         login_user(user, remember=remember)
                         '''
                         # check_role = current_user.role # Sjekk rollen, også redirect basert på det

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
 
+</style>
 <div class="container">
   <div class="row">
     <div class="col-md-10 offset-md-1">
@@ -67,7 +69,7 @@
                           </div>
                         </div>
                         <div class="modal-footer mb-5">
-                          <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}" onsubmit="return confirm('Are you sure you want to delete this user?')">
+                          <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}" onclick="loading();" onsubmit="return confirm('Are you sure you want to delete this user?')"  >
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn btn-outline-danger">Delete User</button>
                           </form>

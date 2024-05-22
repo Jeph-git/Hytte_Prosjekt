@@ -49,8 +49,8 @@ def generate_token(user_id):
     return serializer.dumps(user_id)
 
 def send_token(user, token):
-    # print(f'Token: {token}')
-    return f"/set_password/{token}"
+    print(f'Token: {token}')
+    return f"set_password/{token}"
     
 
 def verify_token(token):

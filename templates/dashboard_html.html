@@ -112,73 +112,38 @@
 
   <!-- ADMIN DASHBOARD -->
   {% if current_user.role == 'admin' %}
-
-
   <div class="container-sm text-center">
     <div class="row">  
+
       <div class="col-md-6">
         <div class="card mt-5 ">
           <div class="card-body">
-            <h5 class="card-title">Bestill snøbrøyting</h5>
+            <h5 class="card-title">Registrer customer</h5>
             <p class="card-text">Velg dato for måking.</p>
-            <a href="{{ url_for('cabin.cabin') }}" class="btn btn-outline-primary">Bestill her</a>
+            <a href="{{ url_for('register.register_customer') }}" class="btn btn-outline-primary">Registrer</a>
           </div>
         </div>
       </div>
-
 
       <div class="col-md-6">
         <div class="card mt-5">
           <div class="card-body">
-            <h5 class="card-title">Mine bestillinger</h5>
+            <h5 class="card-title">Registrer ordfører</h5>
             <p class="card-text">Se aktive og ferdige ordre.</p>
-            <a href="{{ url_for('orders.orders') }}" class="btn btn-outline-primary">Se her</a>
+            <a href="{{ url_for('register.register_governor') }}" class="btn btn-outline-primary">Se her</a>
           </div>
         </div>
-      </div>
-
-      
-      <div class="col-md-6">
-        <div class="card m-1">
-          <div class="card-body">
-            <h5 class="card-title">Legg til adresse</h5>
-            <p class="card-text">Se oversikt.</p>
-            <a href="{{ url_for('sok_adresse.sok_adresse') }}" class="btn btn-outline-primary">Legg til adresse</a>
-          </div>
-        </div> 
       </div>
 
       <div class="col-md-6">
         <div class="card m-1">
           <div class="card-body">
-            <h5 class="card-title">Registrer hytteeier</h5>
+            <h5 class="card-title">Admin</h5>
             <p class="card-text">Se oversikt.</p>
-            <a href="{{ url_for('sok_adresse.sok_adresse') }}" class="btn btn-outline-primary">Legg til adresse</a>
+            <a href="{{ url_for('admin.admin') }}" class="btn btn-outline-primary">Admin</a>
           </div>
         </div> 
       </div>
-
-        <!-- map container -->
-        <div class="col-md-6">
-          <div class="card m-1">
-            <div class="card-body">
-              <h5 class="card-title">Kart</h5>
-              <p class="card-text">Se oversikt.</p>
-              <a href="{{ url_for('map.map') }}" class="btn btn-outline-primary">Vis kart</a>
-            </div>
-          </div>    
-        </div>
-  
-        <!-- calendar container -->
-        <div class="col-md-6">
-          <div class="card m-1">
-            <div class="card-body">
-              <h5 class="card-title">Kalender</h5>
-              <p class="card-text">Se oversikt.</p>
-              <a href="{{ url_for('calendar.display_calendar') }}" class="btn btn-outline-primary">Se kalender</a>
-            </div>
-          </div> 
-        </div>
 
     </div>
   </div>

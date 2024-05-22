@@ -3,15 +3,14 @@
 {% block content %}
 {% if current_user.role == 'plowman' %}
   
-<div class="container mb-5">
+<div class="container">
   <div class="row">
     <div class="col-md-10 offset-md-1">
-      <form method="POST" action="{{ url_for('orders.display_orders') }}">
+      <form id="customer_form" method="POST" action="{{ url_for('orders.display_orders') }}">
         {{ form.hidden_tag() }}
         <div class="form-group mt-3">
-          {{ form.customer(class="form-control") }}
+          {{ form.customer(class="form-control", id="customer_select") }}
         </div>
-        <button type="submit" class="btn btn-primary">Velg kunde</button>
       </form>
     </div>
   </div>
@@ -222,6 +221,15 @@
       $(this).tab('show');
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const customerSelect = document.getElementById('customer_select');
+    if (customerSelect) {
+      customerSelect.addEventListener('change', function() {
+          document.getElementById('customer_form').submit();
+      });
+    }
+});
 
 </script> 
 

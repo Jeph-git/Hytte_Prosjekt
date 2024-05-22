@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='img/plowmanlogo.png') }}" alt="Brøyting Logo" height="40">
+            <!-- <img src="{{ url_for('static', filename='img/plowmanlogo.png') }}" alt="Brøyting Logo" height="40"> -->
+            Brøyting
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -65,23 +66,7 @@
 
                 <!-- ADMIN -->
                 {% if current_user.role == 'admin' %}
-
-                <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'map' %}active{% endif %}" href="{{ url_for('map.map') }}">Kart</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %} " href="{{ url_for('calendar.display_calendar') }}">Kalender</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'cabin' %}active{% endif %}" href="{{ url_for('cabin.cabin') }}">Bestill snøbrøyting</a>
-                </li>
-
+                          
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_governor') }}">Registrer ordfører</a>
                 </li>
@@ -91,7 +76,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_plowman') }}">Registrer Plowman</a>
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_plowman') }}">Registrer plowman</a>
                 </li>
 
                 <li class="nav-item">

@@ -71,6 +71,8 @@ def display_calendar():
                         'address': address.address,
                         'postnummer': address.postnummer,
                         'poststed': address.poststed,
+                        'latitude': address.latitude,
+                        'longitude': address.longitude,
                     })
 
     for event in events:

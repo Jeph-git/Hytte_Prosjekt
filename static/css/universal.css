@@ -9,10 +9,10 @@
 
     #map {
         position: fixed;
-        top: 66px;
+        top: 56px;
         left: 0;
         width: 100%;
-        height: calc(100% - 66px);
+        height: calc(100% - 56px);
     }
     
     .map-buttons { 
@@ -20,6 +20,8 @@
         bottom: 0;
         left: 0;
         height: auto !important;
+        display: flex;
+        gap:10px;
     }
 
     .map-form {
