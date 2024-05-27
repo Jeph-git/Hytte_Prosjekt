@@ -41,8 +41,9 @@ def display_calendar():
     if form.validate_on_submit():
         selected_customer_id = form.customer.data
         session['selected_customer_id'] = selected_customer_id
+        print(f"Selected Customer ID {session.get('selected_customer_id')}")
     else:
-        print(session.get('selected_customer_id'))
+        print(f"Selected Customer ID {session.get('selected_customer_id')}")
         selected_customer_id = session.get('selected_customer_id')
         # If there is no value stored in the session, default to the first customer in the choices
         if not selected_customer_id and customers:

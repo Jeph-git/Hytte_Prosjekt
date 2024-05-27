@@ -59,6 +59,7 @@
   <div id="calendar" class="container"></div>
 </div>
 <script>
+
   document.addEventListener('DOMContentLoaded', function() {
     let calendarElement = document.getElementById('calendar');
     let events = [
@@ -108,12 +109,6 @@
       $('#orderModal').modal('show');
     }
 
-    const customerSelect = document.getElementById('customer_select');
-    if (customerSelect) {
-      customerSelect.addEventListener('change', function() {
-          document.getElementById('customer_form').submit();
-      });
-    }
 
     // Fetch weather data
     fetchWeatherData();
@@ -266,7 +261,12 @@
       });
     }
   });
+
+  const customerSelect = document.getElementById('customer_select');
+  if (customerSelect) {
+    customerSelect.addEventListener('change', function() {
+        document.getElementById('customer_form').submit();
+    });
+  }
 </script>
-
-
 {% endblock %}

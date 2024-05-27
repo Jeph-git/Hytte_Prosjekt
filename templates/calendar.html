@@ -91,6 +91,7 @@
     let calendar = new FullCalendar.Calendar(calendarElement, {
       events: events,
       eventClick: function(info) {
+          info.jsEvent.stopPropagation();
           let userId = info.event.extendedProps.userId;
           let message = info.event.extendedProps.message;
           let address = info.event.extendedProps.address;
@@ -99,7 +100,13 @@
           let latitude = info.event.extendedProps.latitude;
           displayOrderModal(userId, message, address, postnummer, poststed, latitude);
       },
-      contentHeight: "auto" 
+      contentHeight: "auto",
+      dayMaxEvents: 3, 
+      dayMaxEventRows: 3, 
+      moreLinkClick: 'popover', 
+      datesSet: function() {
+        fetchWeatherData();
+      }
   });
 
     calendar.render();
@@ -115,12 +122,6 @@
       $('#orderModal').modal('show');
     }
 
-    const customerSelect = document.getElementById('customer_select');
-    if (customerSelect) {
-      customerSelect.addEventListener('change', function() {
-          document.getElementById('customer_form').submit();
-      });
-    }
 
     // Fetch weather data
     fetchWeatherData();
@@ -273,6 +274,14 @@
       });
     }
   });
+
+  const customerSelect = document.getElementById('customer_select');
+  if (customerSelect) {
+    customerSelect.addEventListener('change', function() {
+        document.getElementById('customer_form').submit();
+    });
+  }
 </script>
 
 {% endblock %}
+ 
