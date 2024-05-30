@@ -30,3 +30,23 @@
         right: 0;
         max-width: 300px;
     }
+
+  /* Responsive styles */
+  @media (max-width: 767px) {
+    .fc-toolbar.fc-header-toolbar {
+      display: flex;
+      flex-direction: column;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk {
+      margin-bottom: 3px; /* Adjust gap between buttons */
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(1) {
+      order: 3;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+      order: 1;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
+      order: 2;
+    }
+  }
