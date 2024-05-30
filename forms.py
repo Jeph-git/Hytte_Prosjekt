@@ -68,13 +68,15 @@ class AddressForm(FlaskForm):
     submit = SubmitField('Søk')
 
 
-class AddressFormTESTING(FlaskForm):
-    poststed = StringField('Poststed', validators=[DataRequired()])
-    postnummer = StringField('Postnummer', validators=[DataRequired()])
-    submit = SubmitField('Fetch Addresses')
-
-
-
 class SelectCustomer(FlaskForm):
     customer = SelectField('Kunde', coerce=int)  
     submit = SubmitField('Registrer')
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('E-postadresse', validators=[DataRequired(), Email()])
+    submit = SubmitField('Send e-post')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Passord', validators=[DataRequired()])
+    confirmPassword = PasswordField('Bekreft Passord', validators=[DataRequired()])
+    submit = SubmitField('Oppdater passord')

@@ -4,11 +4,7 @@ from models import Bestilling, User, Address, User_Customer, Customer
 from weather import get_weather
 from utils import role_required, ROLES
 from forms import SelectCustomer
-'''
-[{'title': 'Hytteeier 124', 'start': '2024-04-25', 'end': '2024-04-26', 'userId': 124, 'message': '22 Test - KUNDE: GEILO', 'address': 'Slottsplassen 1', 'postnummer': '0010', 'poststed': 'OSLO'}, 
-{'title': 'Hytteeier 126', 'start': '2024-04-26', 'end': '2024-04-27', 'userId': 126, 'message': 'KUNDE:; HEMSEDAL\r\n', 'address': 'Tåsenveien 131B', 'postnummer': '0880', 'poststed': 'OSLO'}, 
-{'title': 'Hytteeier 126', 'start': '2024-04-26', 'end': '2024-05-05', 'userId': 126, 'message': 'azfazxfa', 'address': 'Tåsenveien 131B', 'postnummer': '0880', 'poststed': 'OSLO'}]
-'''
+
 
 
 CALENDAR = Blueprint('calendar', __name__)
@@ -23,19 +19,19 @@ def display_calendar():
     form = SelectCustomer()
 
 
-    # Get all User_Customer records excluding the current user
+    
     user_customers = User_Customer.query.filter(User_Customer.user_id != current_user.id).all()
 
-    # Get all customer IDs from the User_Customer records
+    
     customer_ids = [user_customer.customer_id for user_customer in user_customers]
 
-    # Get all customers that are linked to the current user
+    
     customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
 
-    # Filter out customers that are only linked to the current user
+    
     customers = [customer for customer in customers if customer.id in customer_ids]
 
-    # Update the form choices
+    
     form.customer.choices = [(customer.id, customer.name) for customer in customers]
 
     if form.validate_on_submit():
@@ -45,7 +41,7 @@ def display_calendar():
     else:
         print(f"Selected Customer ID {session.get('selected_customer_id')}")
         selected_customer_id = session.get('selected_customer_id')
-        # If there is no value stored in the session, default to the first customer in the choices
+        
         if not selected_customer_id and customers:
             selected_customer_id = customers[0].id
 

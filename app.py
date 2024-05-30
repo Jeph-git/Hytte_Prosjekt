@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_babel import Babel
 from flask_babel import _
 from flask_login import LoginManager
+from flask_mailman import EmailMessage, Mail
 
 from models import User
 from database import db
@@ -25,7 +26,7 @@ from blueprints.admin import ADMIN
 from blueprints.sok_etter_adresse import SOK_ADRESSE
 from blueprints.set_password import SET_PASSWORD
 from blueprints.calendar import CALENDAR
-from blueprints.sok_postnummer_poststed import POSTNUMMER_TESTING
+from blueprints.reset_password import RESET_PASSWORD
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -35,6 +36,19 @@ login_manager = initialize_login_manager(app)
 babel = Babel(app)
 babel.init_app(app)
 app.config['BABEL_DEFAULT_LOCALE'] = 'nb_NO'
+
+app.config.update(
+    MAIL_SERVER='smtp.mailersend.net',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME='MS_pkkTry@trial-z3m5jgryqkd4dpyo.mlsender.net',
+    MAIL_PASSWORD='R2eGGBAJjnL4jhHQ',
+    MAIL_DEFAULT_SENDER=('Broyting', 'MS_pkkTry@trial-z3m5jgryqkd4dpyo.mlsender.net')
+)
+
+mail = Mail(app)
+
 
 is_heroku = os.environ.get('IS_HEROKU', None)
 if is_heroku:
@@ -85,9 +99,7 @@ app.register_blueprint(ORDERS)
 # Admin page
 app.register_blueprint(ADMIN)
 
-# TESTING TESTING
-app.register_blueprint(POSTNUMMER_TESTING)
-# TESTING TESTING
+app.register_blueprint(RESET_PASSWORD)
 
 # Søk adresse
 app.register_blueprint(SOK_ADRESSE)
