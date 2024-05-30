@@ -25,7 +25,7 @@ def reset_password_request():
             send_reset_password_email(user)
             flash('An email has been sent with instructions to reset your password.', 'success')
         else:
-            flash('No user found with that email address.')
+            flash('No user found with that email address.', 'danger')
         return redirect(url_for('login.login'))
     return render_template('reset_password_request.html', title='Reset Password', form=form)
 
@@ -51,14 +51,14 @@ def reset_password(token, user_id):
 
     user = User.validate_reset_password_token(token, user_id)
     if not user:
-        flash('Invalid or expired token.')
+        flash('Invalid or expired token.','danger')
         return redirect(url_for('reset_password.reset_password_request'))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Your password has been reset.', 'success')
         return redirect(url_for('login.login'))
     return render_template('reset_password.html', title='Reset Password', form=form)
 
