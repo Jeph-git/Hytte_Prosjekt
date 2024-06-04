@@ -2,6 +2,23 @@
 
 {% block content %}
 
+{% if current_user.role == 'plowman' %}
+  
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <form id="customer_form" method="POST" action="{{ url_for('orders.orders') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group mt-3">
+          {{ form.customer(class="form-control", id="customer_select") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
 <div class="container">
   <div class="row">
     <div class="col-md-10 offset-md-1">
@@ -72,15 +89,26 @@
                           </div>
                           <div class="modal-body">
                             <p><strong>BrukerID:</strong> {{ order.bestillings_id }}</p>
-                            <p><strong>Ankomst:</strong> {{ order.ankomst }}</p>
+                            {% for address in addresses %}
+                              {% if address.user_id == order.bestillings_id %}
+                                  <p><strong>Adresse:</strong> {{ address.address }}, {{ address.poststed }} {{ address.postnummer }}</p>
+                              {% endif %}
+                            {% endfor %}
+                            <p><strong>Ankomst:</strong> {{ order.ankomst }} </p>
                             <p><strong>Avreise:</strong> {{ order.avreise }}</p>
                             <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
                           </div>
                           <div class="modal-footer">
+                            
+                            {% if current_user.role == 'cabin_owner' %}
                             <form method="post" action="{{ url_for('orders.delete_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil slette denne bestillingen?')">
                               <input type="hidden" name="_method" value="DELETE">
                               <button type="submit" class="btn btn-outline-danger">Slett bestilling</button>
                             </form>
+                              
+                            {% else %}
+                              
+                            {% endif %}
 
                             <!-- OPPDATER KNAPP -->
                             <!-- <form method="post" action="{{ url_for('orders.update_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil markere ordre som fullført?')">
@@ -157,19 +185,27 @@
                           </div>
                           <div class="modal-body">
                             <p><strong>BrukerID:</strong> {{ order.bestillings_id }}</p>
+                            {% for address in addresses %}
+                              {% if address.user_id == order.bestillings_id %}
+                                  <p><strong>Adresse:</strong> {{ address.address }}, {{ address.poststed }} {{ address.postnummer }}</p>
+                              {% endif %}
+                            {% endfor %}
                             <p><strong>Ankomst:</strong> {{ order.ankomst }}</p>
                             <p><strong>Avreise:</strong> {{ order.avreise }}</p>
                             <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
                           </div>
                           <div class="modal-footer">
+
+                            {% if current_user.role == 'cabin_owner' %}
                             <form method="post" action="{{ url_for('orders.delete_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil slette denne bestillingen?')">
                               <input type="hidden" name="_method" value="DELETE">
                               <button type="submit" class="btn btn-outline-danger">Slett bestilling</button>
                             </form>
-                            <form method="post" action="{{ url_for('orders.update_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil markere ordre som fullført?')">
-                              <input type="hidden" name="_method" value="POST">
-                              <button type="submit" class="btn btn-outline-secondary">Oppdater</button>
-                            </form>
+                              
+                            {% else %}
+                              
+                            {% endif %}
+ 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
                           </div>
                         </div>
@@ -209,7 +245,14 @@
       $(this).tab('show');
     });
   });
-
+  document.addEventListener('DOMContentLoaded', function() {
+    const customerSelect = document.getElementById('customer_select');
+    if (customerSelect) {
+      customerSelect.addEventListener('change', function() {
+          document.getElementById('customer_form').submit();
+      });
+    }
+});
 </script> 
 
 

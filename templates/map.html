@@ -20,44 +20,149 @@
 </div>
 
 <!-- Form container -->
+<!-- Form container -->
+<!-- Form container -->
 <div class="container mb-5 map-form">
   <div class="row">
-    <div class="col-md-10 offset-md-1">
-      <form id="customer_form" method="POST" action="{{ url_for('map.map') }}">
+    <!-- First form -->
+    <div class="col-12 d-flex align-items-stretch mb-1">
+      <form id="customer_form" method="POST" action="{{ url_for('map.map') }}" class="w-100">
         {{ form.hidden_tag() }}
         <div class="form-group mt-3">
           {{ form.customer(class="form-control", id="customer_select") }}
         </div>
       </form>
     </div>
+    <!-- Second form -->
+
+    <!-- <div class="col-12 d-flex align-items-stretch">
+      <form id="show_orders_form" method="POST" action="" class="d-flex align-items-center w-100" style="height: 100%;">
+        {{ choose_dates_on_map_form.hidden_tag() }}
+        <div class="form-group mb-0" style="width: 100%;">
+          <div class="form-check d-flex align-items-center" style="border-radius: 10px; background-color: #f2f2f2; height: 100%;">
+            {{ choose_dates_on_map_form.show_more_dates(class="form-check-input", style="margin-left: -0.999rem;") }}
+            <label class="form-check-label mb-0 ml-2" for="show_today">Velg for å se aktive bestillinger imorgen</label>
+          </div>
+        </div>
+      </form>
+    </div> -->
+
   </div>
 </div>
+
+
 
 <div class="btn-group mt-5 w-100 mr-2 map-buttons ">     
   <button id="bbox-blue" class=" btn btn-sm btn-primary mb-2 text-nowrap">Aktive</button>
   <button id="bbox-all" class=" btn btn-sm btn-primary mb-2 text-nowrap">Alle adresser</button>
   <button id="current-position" class=" btn btn-sm btn-primary mb-2 text-nowrap">Min posisjon</button>
+  <button id="help-button" class="btn btn-sm btn-info mb-2 text-nowrap" data-toggle="modal" data-target="#helpModal">Hjelp</button>
 </div>
 
 <!-- Current Position Info -->
 <div id="current-position-info" class="mt-3"></div>
 
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="helpModalLabel">Markør informasjon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul style="list-style-type:none;padding-left:0;">
+
+          <div class="container ml-0 pl-0 mb-4">
+            <div class="container p-2" style="border-radius: 10px; background-color: #f2f2f2;">
+              <li class="mb-2"><img src="static/img/marker-icon.png" alt="Blue Marker" style="width:23px;height:38px;"><p class="ml-2 d-inline small">Aktiv bestilling idag</p></li>
+              <li class="mb-2"><img src="static/img/marker-icon-w-email.png" alt="Blue Marker" style="width:23px;height:38px;"><p class="ml-2 d-inline small">Aktiv bestilling idag, med melding</p></li>
+            </div>
+          </div>
+
+          <div class="container ml-0 pl-0 mb-4">
+            <div class="container p-2" style="border-radius: 10px; background-color: #f2f2f2;">
+              <li class="mb-2"><img src="static/img/marker-icon-2x-red.png" alt="Red Marker" style="width:23px;height:38px;"><p class="ml-2 d-inline small">Aktiv bestilling planlagt frem i tid</p></li>
+              <li class="mb-2"><img src="static/img/marker-icon-2x-red-w-email.png" alt="Red Marker" style="width:23px;height:38px;"><p class="ml-2 d-inline small">Aktiv bestilling planlagt frem i tid, med melding</p></li>
+            </div>
+          </div>
+
+          <div class="container ml-0 pl-0">
+            <div class="container p-2" style="border-radius: 10px; background-color: #f2f2f2;">
+              <li><img src="static/img/marker-icon-2x-green.png" alt="Green Marker" style="width:23px;height:38px;"> <p class="ml-2 d-inline small">Ferdig brøytet</p></li>
+            </div>
+          </div>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script> <!-- Add Leaflet library -->
 <script>
-  function getIconUrl(orderPending, hasMessage) {
-    if (orderPending[0] && hasMessage) {
-      return 'static/img/marker-icon-w-email.png';
-    } else if (!orderPending[0] && hasMessage) {
-      return 'static/img/marker-icon-2x-green-w-email.png';
-    } else if (orderPending[0] && !hasMessage) {
-      return 'static/img/marker-icon.png';
+
+  var currentLocationMarker = null;
+
+  // addCurrentLocationMarker
+  function addCurrentLocationMarker(map, latlng) {
+    if (currentLocationMarker) {
+      map.removeLayer(currentLocationMarker); // Remove previous marker if exists
+    } 
+    else {
+     currentLocationMarker = L.marker(latlng).addTo(map).bindPopup("Din posisjon").openPopup();
     }
-    else if (!orderPending[0] && !hasMessage) {
+  }
+
+  //Defunct function
+  function getIconUrl2(orderPending, hasMessage) {
+    if (orderPending && hasMessage) {
+      return 'static/img/marker-icon-w-email.png';
+    } else if (!orderPending && hasMessage) {
+      return 'static/img/marker-icon-2x-green-w-email.png';
+    } else if (orderPending && !hasMessage) {
+      return 'static/img/marker-icon.png';
+    } else {
       return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png';
     }
   }
 
+  function getIconUrl(orderPending, hasMessage, arrivalDate) {
+    var today = new Date();
+    var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    var isToday = String(arrivalDate) === String(formattedToday);
+    
+    // Blått ikon for aktiv bestilling med melding idag
+    if (orderPending && hasMessage && isToday) {
+        console.log('First if statement')
+        return 'static/img/marker-icon-w-email.png';
+    } 
+    else if (orderPending && !hasMessage && isToday) {
+      console.log('Second if statement')
+      return 'static/img/marker-icon.png';
+    }
+    else if (orderPending && hasMessage && !isToday) {
+      console.log('Third if statement')
+      return 'static/img/marker-icon-2x-red-w-email.png'
+    }
+    else if (orderPending && !hasMessage && !isToday) {
+      console.log('Fourth if statement')
+      return 'static/img/marker-icon-2x-red.png'
+    }
+    else {
+      console.log('Else statement')
+      return 'static/img/marker-icon-2x-green.png';
+    }
+  }
 
   function initMap() {
     var map = L.map('map');
@@ -68,7 +173,6 @@
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-          
             L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         }, function(error) {
             console.error('Error getting location', error);
@@ -79,7 +183,7 @@
 
     var markers = {{ markers|tojson }};
     var activeOrders = markers.filter(function(marker) {
-        return marker.order_pending.includes(true);
+        return marker.orders.some(order => order.order_pending);
     });
 
     var coordinates;
@@ -101,29 +205,46 @@
         L.latLng(bbox[3], bbox[2])
     );
 
-    
     var paddedBounds = bounds.pad(0.1);
-
-    
     map.fitBounds(paddedBounds, {duration: 0.5});
 
     markers.forEach(function(marker) {
       var latlng = [marker.representasjonspunkt.lat, marker.representasjonspunkt.lon];
-    
+
+      // Find the first order with order_pending = True
+      var firstPendingOrder = marker.orders.find(order => order.order_pending);
       var popupContent = "Telefonnummer: " + encodeURIComponent(marker.phone) + "<br>" +
           "Adresse: " + marker.adressetekst + "<br>" +
           "Poststed: " + marker.poststed + "<br>" +
-          "Postnummer: " + marker.postnummer + "<br>" +
-          "Melding: " + marker.message + "<br>" + 
-          '<p><a href="/cabin_bonde?adresse=' + encodeURIComponent(marker.adressetekst) +
-          '&poststed=' + encodeURIComponent(marker.poststed) +
-          '&postnummer=' + encodeURIComponent(marker.postnummer) +
-          '&message=' + encodeURIComponent(marker.message) +
-          '">Brøytet ferdig</a>';
+          "Postnummer: " + marker.postnummer + "<br>";
+
+      if (firstPendingOrder) {
+          popupContent += "Ankomst: " + firstPendingOrder.arrival_date + "<br>" +
+              "Avreise: " + firstPendingOrder.departure_date + "<br>" +
+              "Melding: " + firstPendingOrder.message + "<br>" +
+              '<p><a href="/cabin_bonde?adresse=' + encodeURIComponent(marker.adressetekst) +
+              '&poststed=' + encodeURIComponent(marker.poststed) +
+              '&postnummer=' + encodeURIComponent(marker.postnummer) +
+              '&message=' + encodeURIComponent(firstPendingOrder.message) +
+              '">Brøytet ferdig</a></p>';
+      }
+
+      // Formatering av datoer
+      var today = new Date();
+      var tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      var formattedDateTomorrow = tomorrow.getFullYear() + '-' + ('0' + (tomorrow.getMonth() + 1)).slice(-2) + '-' + ('0' + tomorrow.getDate()).slice(-2);
+      var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
       
-    
-      var iconUrl = getIconUrl(marker.order_pending, marker.hasMessage); 
-      
+
+      console.log("Today's Date:", formattedDate);
+      console.log("Tomorrow's Date:", formattedDateTomorrow);
+      console.log("Arrival Date:", firstPendingOrder ? firstPendingOrder.arrival_date : null);
+      arrivalDate = firstPendingOrder ? firstPendingOrder.arrival_date : null;
+      var orderPending = firstPendingOrder ? firstPendingOrder.order_pending : false;
+      var hasMessage = firstPendingOrder ? firstPendingOrder.message : false;
+      var iconUrl = getIconUrl(orderPending, hasMessage, arrivalDate);
+
       var customIcon = new L.Icon({
           iconUrl: iconUrl,
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -132,15 +253,20 @@
           popupAnchor: [1, -34],
           shadowSize: [41, 41]
       });
-    
+
       L.marker(latlng, { icon: customIcon }).addTo(map).bindPopup(popupContent);
     });
-  
 
-    
     document.getElementById('bbox-blue').addEventListener('click', function() {
       var blueMarkers = markers.filter(function(marker) {
-        return marker.order_pending.includes(true);
+        var firstPendingOrder = marker.orders.find(order => order.order_pending);
+        if (firstPendingOrder) {
+          var arrivalDate = firstPendingOrder.arrival_date;
+          var today = new Date();
+          var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+          return arrivalDate === formattedToday;
+        }
+        return false;
       });
 
       if (blueMarkers.length > 0) {
@@ -150,18 +276,13 @@
         var bluePoints = turf.multiPoint(blueCoordinates);
         var blueBbox = turf.bbox(bluePoints);
 
-        
         var bounds = L.latLngBounds(
           L.latLng(blueBbox[1], blueBbox[0]),
           L.latLng(blueBbox[3], blueBbox[2])
         );
 
-        
         var paddedBounds = bounds.pad(0.1);
-
-        
         map.flyToBounds(paddedBounds, {duration: 0.5});
-
       }
     });
 
@@ -172,41 +293,51 @@
       var allPoints = turf.multiPoint(allCoordinates);
       var allBbox = turf.bbox(allPoints);
 
-      
       var bounds = L.latLngBounds(
         L.latLng(allBbox[1], allBbox[0]),
         L.latLng(allBbox[3], allBbox[2])
       );
 
-     
       var paddedBounds = bounds.pad(0.1);
-
-     
       map.flyToBounds(paddedBounds, {duration: 0.5});
     });
 
-    map.on('locationfound', function(e) {
-      L.marker(e.latlng).addTo(map)
-          .bindPopup("Din posisjon").openPopup();
-    });
+//    map.on('locationfound', function(e) {
+//      L.marker(e.latlng).addTo(map)
+//          .bindPopup("Din posisjon").openPopup();
+//    });
 
+
+       // Event listener for location found
+       map.on('locationfound', function(e) {
+        var latlng = e.latlng;
+        addCurrentLocationMarker(map, latlng); // Add marker at current location
+      });
+    
     document.getElementById('current-position').addEventListener('click', function() {
       map.locate({setView: true});
     });
   }
 
+  
 
   document.addEventListener('DOMContentLoaded', function() {
     initMap();
-
+  
     const customerSelect = document.getElementById('customer_select');
     if (customerSelect) {
       customerSelect.addEventListener('change', function() {
-          document.getElementById('customer_form').submit();
+        document.getElementById('customer_form').submit();
       });
     }
-});
   
+    const showMoreDates = document.querySelector('.form-check-input');
+    if (showMoreDates) {
+      showMoreDates.addEventListener('change', function() {
+        document.getElementById('show_orders_form').submit();
+      });
+    }
+  });
 </script>
 
 {% endblock %}

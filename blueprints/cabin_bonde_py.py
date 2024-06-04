@@ -60,16 +60,16 @@ def cabin_bonde():
         headers = {'Content-Type': 'application/json'}
         print(f'json_data: {json_data}')
         response = requests.post('https://nabohund.no/plowman_cabin/plowman_cabin.php', data=json_data, headers=headers)
-        return response.text
+        # return response.text
         
         
-        # if response.ok: 
-        #     # flash('Brøytet ferdig: Registrert', 'success')
-        #     order.mark_order_as_finished()
-        #     return redirect(url_for('map.map'))
-        # else:
-        #     # flash('Brøytet ferdig: Feil', 'danger')
-        #     return redirect(url_for('map.map'))
+        if response.ok: 
+            # flash('Brøytet ferdig: Registrert', 'success')
+            order.mark_order_as_finished()
+            return redirect(url_for('map.map'))
+        else:
+            # flash('Brøytet ferdig: Feil', 'danger')
+            return redirect(url_for('map.map'))
 
     else:
         title = 'Bestill - Brøyting.net'

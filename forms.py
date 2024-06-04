@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, PasswordField, BooleanField, DateField, ValidationError, SelectField, SelectMultipleField, FieldList
+from wtforms import StringField, SubmitField, IntegerField, PasswordField, BooleanField, DateField, ValidationError, SelectField, SelectMultipleField, FieldList, RadioField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
 
@@ -80,3 +80,7 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Passord', validators=[DataRequired()])
     confirmPassword = PasswordField('Bekreft Passord', validators=[DataRequired()])
     submit = SubmitField('Oppdater passord')
+
+class ChooseDatesOnMap(FlaskForm):
+    show_more_dates = BooleanField('Vis flere datoer')
+    submit = SubmitField('Vis')

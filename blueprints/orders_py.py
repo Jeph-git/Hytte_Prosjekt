@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, session, redirect, url_for, render_template, flash, request
-from models import User, Bestilling, Customer, User_Customer, Governor_User, Governor_Plowman
+from models import User, Bestilling, Customer, User_Customer, Governor_User, Governor_Plowman, Address
 from flask_login import current_user, login_required
 from database import db
 from utils import role_required, ROLES
@@ -15,9 +15,9 @@ def orders():
     title = 'Bestillinger - Brøyting.net'
     if current_user.role == 'cabin_owner': # cabin_owner
         # Får alle bestillinger som samsvarer med ID'en til den påloggede
-        active_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=True).all()
+        active_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=True).order_by(Bestilling.ankomst).all()
 
-        history_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=False).all()
+        history_orders = Bestilling.query.filter_by(bestillings_id=current_user.id, order_pending=False).order_by(Bestilling.ankomst).all()
         
 
     
@@ -35,9 +35,9 @@ def orders():
         user_ids = [governor_user.user_id for governor_user in governor_user_ids]
 
         
-        active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
+        active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).order_by(Bestilling.ankomst).all()
 
-        history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
+        history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).order_by(Bestilling.ankomst).all()
         return render_template(
             'orders_html.html',
             title=title,
@@ -50,29 +50,38 @@ def orders():
         title = 'Bestillinger'
         form = SelectCustomer()
 
-
-        customer_count = len(User_Customer.query.filter_by(user_id=current_user.id).all())
-        
-        selected_customer_id = None
-        if customer_count > 0:
-            selected_customer_id = User_Customer.query.filter_by(user_id=current_user.id).first().customer_id
-
+        user_customers = User_Customer.query.filter(User_Customer.user_id != current_user.id).all()
+        customer_ids = [user_customer.customer_id for user_customer in user_customers]
         customers = Customer.query.join(User_Customer).filter(User_Customer.user_id == current_user.id).all()
+        customers = [customer for customer in customers if customer.id in customer_ids]
+
+        # Update the form choices
         form.customer.choices = [(customer.id, customer.name) for customer in customers]
 
         if form.validate_on_submit():
             selected_customer_id = form.customer.data
+            session['selected_customer_id'] = selected_customer_id
+        else:
+            print(session.get('selected_customer_id'))
+            selected_customer_id = session.get('selected_customer_id')
+            if not selected_customer_id and customers:
+                selected_customer_id = customers[0].id
+
+        form.customer.data = selected_customer_id
 
         if selected_customer_id:
             user_ids = [uc.user_id for uc in User_Customer.query.filter_by(customer_id=selected_customer_id).all()]
-            active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
-            history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
+            active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).order_by(Bestilling.ankomst).all()
+            history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).order_by(Bestilling.ankomst).all()
+            addresses = Address.query.filter(Address.user_id.in_(user_ids)).all()
 
-            return render_template('orders_html_plowman.html', title=title, active_page='orders', active_orders=active_orders, history_orders=history_orders, form=form)
+            return render_template('orders_html.html', title=title, active_page='orders', active_orders=active_orders, history_orders=history_orders, form=form, addresses = addresses)
 
 
-        return render_template('orders_html_plowman.html', title=title, active_page='orders', form=form)
+        return render_template('orders_html.html', title=title, active_page='orders', form=form)
 
+
+# DEFUNCT ROUTE; WILL DELETE LATER
 @ORDERS.route('/order_plowman', methods=['GET', 'POST'])
 @role_required(ROLES[3])
 @login_required
@@ -101,8 +110,8 @@ def display_orders():
 
     if selected_customer_id:
         user_ids = [uc.user_id for uc in User_Customer.query.filter_by(customer_id=selected_customer_id).all()]
-        active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).all()
-        history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).all()
+        active_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == True).order_by(Bestilling.ankomst).all()
+        history_orders = Bestilling.query.filter(Bestilling.bestillings_id.in_(user_ids), Bestilling.order_pending == False).order_by(Bestilling.ankomst).all()
 
         return render_template('orders_html_plowman.html', title=title, active_page='orders', active_orders=active_orders, history_orders=history_orders, form=form)
 

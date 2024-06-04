@@ -6,7 +6,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-10 offset-md-1">
-      <form id="customer_form" method="POST" action="{{ url_for('orders.display_orders') }}">
+      <form id="customer_form" method="POST" action="{{ url_for('orders.orders') }}">
         {{ form.hidden_tag() }}
         <div class="form-group mt-3">
           {{ form.customer(class="form-control", id="customer_select") }}
@@ -91,10 +91,10 @@
                             <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
                           </div>
                           <div class="modal-footer">
-                            <form method="post" action="{{ url_for('orders.delete_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil slette denne bestillingen?')">
+                            <!-- <form method="post" action="{{ url_for('orders.delete_order', order_id=order.id) }}" onsubmit="return confirm('Er du sikker du vil slette denne bestillingen?')">
                               <input type="hidden" name="_method" value="DELETE">
                               <button type="submit" class="btn btn-outline-danger">Slett bestilling</button>
-                            </form>
+                            </form> -->
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
                           </div>
                         </div>
