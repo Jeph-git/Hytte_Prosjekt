@@ -44,7 +44,7 @@ def login():
                 if user.password_hash:
                     if user.check_password(form.password.data):
                         remember = form.remember_me.data  # Sjekk om brukeren vil bli husket
-                        print(remember)
+                        print(f'RememberUser: {remember}')
                         session.clear()
                         login_user(user, remember=remember)
                         '''

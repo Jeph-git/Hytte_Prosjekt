@@ -14,7 +14,7 @@
 
                 <!-- For all roles -->
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+                    <a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard.dashboard') }}"><i class="bi bi-house-fill"></i> Dashbord</a>
                 </li>
 
                 <!-- PLOWMAN ROLES -->
@@ -22,15 +22,15 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'map' %}active{% endif %}" href="{{ url_for('map.map') }}">Kart</a>
+                    <a class="nav-link {% if active_page == 'map' %}active{% endif %}" href="{{ url_for('map.map') }}"><i class="bi bi-geo-alt-fill"></i> Kart</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}"><i class="bi bi-list"></i> Bestillinger</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %}" href="{{ url_for('calendar.display_calendar') }}">Kalender</a>
+                    <a class="nav-link {% if active_page == 'calendar' %}active{% endif %}" href="{{ url_for('calendar.display_calendar') }}"><i class="bi bi-calendar-event-fill"></i> Kalender</a>
                 </li>
                 
                 {% endif %} <!-- ENDIF PLOWMAN -->
@@ -91,10 +91,10 @@
             <ul class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {% if active_page == 'profil' %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                    <a class="nav-link dropdown-toggle {% if active_page == 'profil' %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-fill"></i> Profil</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item " href="{{ url_for('profil.profil') }}">Vis Profil</a>
-                        <a class="dropdown-item" href="{{ url_for('logout.logout') }}">Logg ut</a>
+                        <a class="dropdown-item " href="{{ url_for('profil.profil') }}"><i class="bi bi-person-fill"></i> Vis Profil</a>
+                        <a class="dropdown-item" href="{{ url_for('logout.logout') }}"><i class="bi bi-box-arrow-left"></i> Logg ut</a>
                     </div>
                 </li>
                 {% else %}

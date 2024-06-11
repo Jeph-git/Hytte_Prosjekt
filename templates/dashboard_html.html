@@ -112,13 +112,13 @@
 
   <!-- ADMIN DASHBOARD -->
   {% if current_user.role == 'admin' %}
-  <div class="container-sm text-center">
+  <div class="container-sm text-center mb-3">
     <div class="row">  
 
       <div class="col-md-6">
-        <div class="card mt-5 ">
+        <div class="card mt-3 ">
           <div class="card-body">
-            <h5 class="card-title">Registrer customer</h5>
+            <h5 class="card-title">Registrer kunde (hyttefelt)</h5>
             <p class="card-text">Velg dato for måking.</p>
             <a href="{{ url_for('register.register_customer') }}" class="btn btn-outline-primary">Registrer</a>
           </div>
@@ -126,7 +126,7 @@
       </div>
 
       <div class="col-md-6">
-        <div class="card mt-5">
+        <div class="card mt-3">
           <div class="card-body">
             <h5 class="card-title">Registrer ordfører</h5>
             <p class="card-text">Se aktive og ferdige ordre.</p>
@@ -136,9 +136,9 @@
       </div>
 
       <div class="col-md-6">
-        <div class="card m-1">
+        <div class="card mt-3">
           <div class="card-body">
-            <h5 class="card-title">Admin</h5>
+            <h5 class="card-title">Admin dashbord</h5>
             <p class="card-text">Se oversikt.</p>
             <a href="{{ url_for('admin.admin') }}" class="btn btn-outline-primary">Admin</a>
           </div>

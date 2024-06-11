@@ -62,7 +62,7 @@ def orders():
             selected_customer_id = form.customer.data
             session['selected_customer_id'] = selected_customer_id
         else:
-            print(session.get('selected_customer_id'))
+            print(f"Selected customer id: [{session.get('selected_customer_id')}]")
             selected_customer_id = session.get('selected_customer_id')
             if not selected_customer_id and customers:
                 selected_customer_id = customers[0].id
@@ -101,7 +101,7 @@ def display_orders():
         selected_customer_id = form.customer.data
         session['selected_customer_id'] = selected_customer_id
     else:
-        print(session.get('selected_customer_id'))
+        print(f"Selected customer id: [{session.get('selected_customer_id')}]")
         selected_customer_id = session.get('selected_customer_id')
         if not selected_customer_id and customers:
             selected_customer_id = customers[0].id
