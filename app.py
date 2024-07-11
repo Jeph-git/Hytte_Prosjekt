@@ -67,7 +67,7 @@ def index():
     print(session.get('logged_in'))
     title='Brøyting.net'
 
-    return render_template('index.html',title=title)
+    return render_template('index.html',title=title, active_page = 'index')
 
 # Login
 app.register_blueprint(LOGIN)

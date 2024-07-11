@@ -30,19 +30,20 @@ def reset_password_request():
     return render_template('reset_password_request.html', title='Reset Password', form=form)
 
 reset_password_email_html_content = """
-<p>Hello,</p>
-<p>You are receiving this email because you requested a password reset for your account.</p>
+<p>Hei,</p>
+<p>Du mottar denne e-posten fordi du har bedt om å tilbakestille passordet for kontoen din.</p>
 <p>
-    To reset your password,
-    <a href="{{ reset_password_url }}">click here</a>.
+    For å tilbakestille passordet ditt,
+    <a href="{{ reset_password_url }}">klikk her</a>.
 </p>
 <p>
-    Alternatively, you can paste the following link in your browser's address bar: <br>
+    Alternativt kan du lime inn følgende lenke i adressefeltet i nettleseren din: <br>
     {{ reset_password_url }}
 </p>
-<p>If you have not requested a password reset, please contact someone from the development team.</p>
-<p>Thank you!</p>
+<p>Hvis du ikke har bedt om å tilbakestille passordet, vennligst kontakt noen fra utviklingsteamet.</p>
+<p>Takk!</p>
 """
+
 
 @RESET_PASSWORD.route('/reset_password/<token>/<int:user_id>', methods=['GET', 'POST'])
 def reset_password(token, user_id):

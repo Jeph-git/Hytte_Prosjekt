@@ -1,8 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<link rel="stylesheet" href="/static/css/universal.css">
+<nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color:var(--plowman-main)">
     <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">
             <!-- <img src="{{ url_for('static', filename='img/plowmanlogo.png') }}" alt="Brøyting Logo" height="40"> -->
-            Brøyting
+            Kantslått
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,11 +41,11 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'cabin' %}active{% endif %}" href="{{ url_for('cabin.cabin') }}">Bestill snøbrøyting</a>
+                    <a class="nav-link {% if active_page == 'cabin' %}active{% endif %}" href="{{ url_for('cabin.cabin') }}"><i class="bi bi-pencil-square"></i> Bestill snøbrøyting</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Mine bestillinger</a>
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}"><i class="bi bi-list"></i> Mine bestillinger</a>
                 </li>
                 {% endif %} <!-- ENDIF CABIN_OWNER -->
 
@@ -52,12 +53,12 @@
                 {% if current_user.role == 'governor' %}
            
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}">Bestillinger</a>
+                    <a class="nav-link {% if active_page == 'orders' %}active{% endif %}" href="{{ url_for('orders.orders') }}"><i class="bi bi-list"></i> Bestillinger</a>
                 </li>
 
 
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'register_user' %}active{% endif %}" href="{{ url_for('register.register_user') }}">Registrer hytteeier</a>
+                    <a class="nav-link {% if active_page == 'register_user' %}active{% endif %}" href="{{ url_for('register.register_user') }}"><i class="bi bi-person-plus-fill"></i> Registrer hytteeier</a>
                 </li>
 
 
@@ -66,14 +67,15 @@
 
                 <!-- ADMIN -->
                 {% if current_user.role == 'admin' %}
-                          
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_customer') }}">Registrer customer</a>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_governor') }}">Registrer ordfører</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_customer') }}">Registrer customer</a>
-                </li>
                 
                 <li class="nav-item">
                     <a class="nav-link {% if active_page == 'søk' %}active{% endif %}" href="{{ url_for('register.register_plowman') }}">Registrer plowman</a>

@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-
-<!-- FONT AWESOME -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
 
 <style>
+  .modal {
+    z-index: 1060 !important;
+  }
+  .fc-more-popover {
+    z-index: 1050 !important;
+  }
   .fc-event:hover {
     cursor: pointer;
   }
@@ -20,6 +19,8 @@
     position: absolute;
     top: 0;
   }
+
+  
 </style>
 
 <div class="container">
@@ -35,7 +36,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Order Modal -->
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -45,8 +46,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-      </div>
+      <div class="modal-body"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
       </div>
@@ -58,86 +58,119 @@
   <h1>Calendar</h1>
   <div id="calendar" class="container"></div>
 </div>
-<script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function() {
     let calendarElement = document.getElementById('calendar');
     let events = [
-      {% for event in events %}
-      {
-          "title": "{{ event.title | replace("'", "\\'") }}",
-          "start": "{{ event.start }}",
-          "end": "{{ event.end }}",
-          "userId": "{{ event.userId }}",
-          "message": "{{ event.message }}",
-          "address": "{{ event.address }}",
-          "postnummer": "{{ event.postnummer }}",
-          "poststed": "{{ event.poststed }}",
-          "latitude": "{{ event.latitude }}",
+    {% for event in events %}
+    {
+      "title": "{{ event.title | replace("'", "\\'") }}",
+      "start": "{{ event.start }}",
+      "end": "{{ event.end }}",
+      "userId": "{{ event.userId }}",
+      "message": "{{ event.message }}",
+      "address": "{{ event.address }}",
+      "postnummer": "{{ event.postnummer }}",
+      "poststed": "{{ event.poststed }}",
+      "latitude": "{{ event.latitude }}",
           "longitude": "{{ event.longitude }}"
       },
       {% endfor %}
     ];
-
-    let calendar = new FullCalendar.Calendar(calendarElement, {
-      events: events,
-      eventClick: function(info) {
-          let userId = info.event.extendedProps.userId;
-          let message = info.event.extendedProps.message;
-          let address = info.event.extendedProps.address;
-          let postnummer = info.event.extendedProps.postnummer;
-          let poststed = info.event.extendedProps.poststed;
-          let latitude = info.event.extendedProps.latitude;
-          displayOrderModal(userId, message, address, postnummer, poststed, latitude);
+  
+     let calendar = new FullCalendar.Calendar(calendarElement, {
+    events: events,
+    eventClick: function(info) {
+      info.jsEvent.stopPropagation();
+      let userId = info.event.extendedProps.userId;
+      let message = info.event.extendedProps.message;
+      let address = info.event.extendedProps.address;
+      let postnummer = info.event.extendedProps.postnummer;
+      let poststed = info.event.extendedProps.poststed;
+      let latitude = info.event.extendedProps.latitude;
+      displayOrderModal(userId, message, address, postnummer, poststed, latitude);
+    },
+    contentHeight: "auto",
+    moreLinkClick: 'day',
+    views: {
+      dayGridMonth: {
+        dayMaxEvents: 2, // Set a limit for month view
+        dayMaxEventRows: 3 // Set a limit for month view
       },
-      contentHeight: "auto" 
+      dayGridDay: {
+        dayMaxEvents: false, // Show all events for day view
+        dayMaxEventRows: false // Show all events for day view
+      },
+      timeGridWeek: {
+        dayMaxEvents: false, // Show all events for week view
+        dayMaxEventRows: false, // Show all events for week view
+        type: 'timeGrid',
+        duration: { weeks: 1 }
+      },
+      timeGridDay: {
+        dayMaxEvents: false, // Show all events for day view
+        dayMaxEventRows: false // Show all events for day view
+      }
+    },
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    customButtons: {
+      customMonthViewButton: {
+        text: 'Month',
+        click: function() {
+          calendar.changeView('dayGridMonth');
+        }
+      },
+    },
+    datesSet: function() {
+      fetchWeatherData();
+    }
   });
 
-    calendar.render();
+  calendar.render();
 
     function displayOrderModal(userId, message, address, postnummer, poststed, latitude) {
       let modalBody = document.querySelector('#orderModal .modal-body');
       modalBody.innerHTML = `
-          <p><strong>User ID:</strong> ${userId}</p>
-          <p><strong>Message:</strong> ${message}</p>
-          <p><strong>Addresse:</strong> ${address}</p>
-          <p><strong>Postnummer:</strong> ${postnummer}</p>
-          <p><strong>Poststed:</strong> ${poststed}</p>
-          <p><strong>Latitude:</strong> ${latitude}</p>
+          <p><strong>Bruker ID:</strong> ${userId}</p>
+          <p><strong>Addresse:</strong> ${address}, ${postnummer} ${poststed}</p>
+          <p><strong>Melding:</strong> ${message}</p>
       `;
-
+  
       $('#orderModal').modal('show');
     }
-
-
-    // Fetch weather data
-    fetchWeatherData();
-
+  
     function fetchWeatherData() {
-      // const apiUrl = 'https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=59.4019&lon=9.9301';
-      // const apiUrl = 'https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=69.1040&lon=19.5343';
-          // Calculate the center of the events
-    let totalLat = 0;
-    let totalLng = 0;
-    for (let i = 0; i < events.length; i++) {
-      totalLat += parseFloat(events[i].latitude);
-      totalLng += parseFloat(events[i].longitude);
-    }
-    let centerLat = (totalLat / events.length).toFixed(4);
-    let centerLng = (totalLng / events.length).toFixed(4);
-
-    // Construct the API URL using the calculated center
-    const apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=${centerLat}&lon=${centerLng}`;
-    console.log('API URL:', apiUrl); // Debugging line
+      let totalLat = 0;
+      let totalLng = 0;
+      for (let i = 0; i < events.length; i++) {
+        totalLat += parseFloat(events[i].latitude);
+        totalLng += parseFloat(events[i].longitude);
+      }
+      let centerLat = (totalLat / events.length).toFixed(4);
+      let centerLng = (totalLng / events.length).toFixed(4);
+  
+      const apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=${centerLat}&lon=${centerLng}`;
       fetch(apiUrl)
         .then(response => response.text())
         .then(data => {
           let parser = new DOMParser();
           let xmlDoc = parser.parseFromString(data, "application/xml");
           let timeNodes = xmlDoc.getElementsByTagName("time");
-
+  
           let weatherData = {};
-
+  
           for (let i = 0; i < timeNodes.length; i++) {
             let timeNode = timeNodes[i];
             let date = timeNode.getAttribute('from').split('T')[0];
@@ -149,13 +182,13 @@
               }
             }
           }
-
-          console.log('Weather Data:', weatherData); // Debugging line
-
+  
           updateCalendarWeather(weatherData);
         })
         .catch(error => console.error('Error fetching weather data:', error));
     }
+  
+
 
     function updateCalendarWeather(weatherData) {
       let emojiMapping = {
@@ -243,30 +276,31 @@
         'lightsnow': '49',
         'heavysnow': '50'
       };
-
+  
       let calendarDays = document.querySelectorAll('.fc-daygrid-day');
       calendarDays.forEach(day => {
         let date = day.getAttribute('data-date');
-        console.log('Processing date:', date, 'Weather:', weatherData[date]); // Debugging line
         if (weatherData[date]) {
           let iconPath = emojiMapping[weatherData[date]];
           let imgElement = document.createElement('img');
-          imgElement.className = 'weather-icon'; // Add the class here
+          imgElement.className = 'weather-icon';
           imgElement.src = `/static/img/symbols/lightmode/svg/${iconPath}.svg`;
           imgElement.alt = weatherData[date];
           let spanElement = document.createElement('span');
           spanElement.appendChild(imgElement);
-          day.querySelector('div').appendChild(spanElement); // Append the spanElement to the day
+          day.querySelector('div').appendChild(spanElement);
         }
       });
     }
+  
+  
+    const customerSelect = document.getElementById('customer_select');
+    if (customerSelect) {
+      customerSelect.addEventListener('change', function() {
+          document.getElementById('customer_form').submit();
+      });
+    }
   });
+  </script>
 
-  const customerSelect = document.getElementById('customer_select');
-  if (customerSelect) {
-    customerSelect.addEventListener('change', function() {
-        document.getElementById('customer_form').submit();
-    });
-  }
-</script>
 {% endblock %}

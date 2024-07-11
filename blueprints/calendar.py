@@ -60,7 +60,7 @@ def display_calendar():
                 address = Address.query.filter_by(user_id=user.id).first()
                 if address:
                     events.append({
-                        'title': f'Hytteeier {user.id}',
+                        'title': f'ID: {user.id}',
                         'start': order.ankomst.strftime('%Y-%m-%d'),
                         'end': order.avreise.strftime('%Y-%m-%d'),
                         'userId': user.id,

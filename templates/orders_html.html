@@ -24,10 +24,10 @@
     <div class="col-md-10 offset-md-1">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#active">Aktive Ordre</a>
+          <a class="nav-link active" aria-current="page" href="#active">Aktive ordre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="#history" data-bs-toggle="tab" data-bs-target="#history">Historie</a>
+          <a class="nav-link " href="#history" data-bs-toggle="tab" data-bs-target="#history">Ferdige ordre</a>
         </li>
       </ul>
     </div>
@@ -68,8 +68,8 @@
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.bestillings_id }}</td>
-                  <td>{{ order.ankomst }}</td>
-                  <td>{{ order.avreise }}</td>
+                  <td>{{ order.ankomst.strftime('%d-%m-%y') }}</td>
+                  <td>{{ order.avreise.strftime('%d-%m-%y') }}</td>
                   <!-- <td class="d-none d-md-table-cell">{{ order.melding }}</td> -->
                   <td>
                     <!-- Vis order knapp -->
@@ -94,8 +94,9 @@
                                   <p><strong>Adresse:</strong> {{ address.address }}, {{ address.poststed }} {{ address.postnummer }}</p>
                               {% endif %}
                             {% endfor %}
-                            <p><strong>Ankomst:</strong> {{ order.ankomst }} </p>
-                            <p><strong>Avreise:</strong> {{ order.avreise }}</p>
+                            
+                            <p><strong>Ankomst:</strong> {{ order.ankomst.strftime('%d-%m-%Y') }} </p>
+                            <p><strong>Avreise:</strong> {{ order.avreise.strftime('%d-%m-%Y') }}</p>
                             <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
                           </div>
                           <div class="modal-footer">
@@ -164,8 +165,8 @@
                 <tr>
                   <td class="d-none d-md-table-cell">{{ count.value }}</td>
                   <td>{{ order.bestillings_id }}</td>
-                  <td>{{ order.ankomst }}</td>
-                  <td>{{ order.avreise }}</td>
+                  <td>{{ order.ankomst.strftime('%d-%m-%y') }}</td>
+                  <td>{{ order.avreise.strftime('%d-%m-%y') }}</td>
                   <!-- <td class="d-none d-md-table-cell">{{ order.melding }}</td> -->
                   <td>
                     <!-- Show Order Button -->
@@ -190,8 +191,8 @@
                                   <p><strong>Adresse:</strong> {{ address.address }}, {{ address.poststed }} {{ address.postnummer }}</p>
                               {% endif %}
                             {% endfor %}
-                            <p><strong>Ankomst:</strong> {{ order.ankomst }}</p>
-                            <p><strong>Avreise:</strong> {{ order.avreise }}</p>
+                            <p><strong>Ankomst:</strong> {{ order.ankomst.strftime('%d-%m-%y') }}</p>
+                            <p><strong>Avreise:</strong> {{ order.avreise.strftime('%d-%m-%y') }}</p>
                             <p class="text-wrap" style="word-wrap: break-word;"><strong>Melding:</strong> {{ order.melding }}</p>
                           </div>
                           <div class="modal-footer">

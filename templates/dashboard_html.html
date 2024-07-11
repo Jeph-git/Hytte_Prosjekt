@@ -2,7 +2,11 @@
 
 {% block content %}
   <!-- Info cards -->
-
+<style>
+  .card {
+    background-color: rgb(248, 247, 247)
+  }
+</style>
 
   <!-- PLOWMAN DASHBOARD -->
   {% if current_user.role == 'plowman' %}
@@ -15,7 +19,7 @@
         <div class="card m-1">
           <div class="card-body">
             <h5 class="card-title">Kart</h5>
-            <p class="card-text">Se oversikt.</p>
+            <p class="card-text"><br></p>
             <a href="{{ url_for('map.map') }}" class="btn btn-outline-primary">Vis kart</a>
           </div>
         </div>    
@@ -26,7 +30,7 @@
         <div class="card m-1">
           <div class="card-body">
             <h5 class="card-title">Bestillinger</h5>
-            <p class="card-text">Se oversikt.</p>
+            <p class="card-text"><br></p>
             <a href="{{ url_for('orders.orders') }}" class="btn btn-outline-primary">Se bestillinger</a>
           </div>
         </div> 
@@ -37,7 +41,8 @@
         <div class="card m-1">
           <div class="card-body">
             <h5 class="card-title">Kalender</h5>
-            <p class="card-text">Se oversikt.</p>
+            <!-- <p class="card-text">Se oversikt.</p> -->
+            <p class="card-text"><br></p>
             <a href="{{ url_for('calendar.display_calendar') }}" class="btn btn-outline-primary">Se kalender</a>
           </div>
         </div> 
@@ -58,7 +63,7 @@
           <div class="card-body">
             <h5 class="card-title">Bestillinger</h5>
             <p class="card-text">Se oversikt.</p>
-            <a href="{{ url_for('orders.orders') }}" class="btn btn-outline-primary">Se bestillinger</a>
+            <a href="{{ url_for('orders.orders') }}" class="btn btn-outline-primary" >Se bestillinger</a>
           </div>
         </div> 
       </div>
@@ -119,7 +124,7 @@
         <div class="card mt-3 ">
           <div class="card-body">
             <h5 class="card-title">Registrer kunde (hyttefelt)</h5>
-            <p class="card-text">Velg dato for måking.</p>
+            <p class="card-text"><br></p>
             <a href="{{ url_for('register.register_customer') }}" class="btn btn-outline-primary">Registrer</a>
           </div>
         </div>
@@ -129,8 +134,18 @@
         <div class="card mt-3">
           <div class="card-body">
             <h5 class="card-title">Registrer ordfører</h5>
-            <p class="card-text">Se aktive og ferdige ordre.</p>
+            <p class="card-text"><br></p>
             <a href="{{ url_for('register.register_governor') }}" class="btn btn-outline-primary">Se her</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Registrer plowman</h5>
+            <p class="card-text"><br></p>
+            <a href="{{ url_for('register.register_plowman') }}" class="btn btn-outline-primary">Se her</a>
           </div>
         </div>
       </div>
