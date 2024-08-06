@@ -1,8 +1,22 @@
-from flask import Flask, Blueprint, session, redirect, url_for, render_template, request, jsonify
-from flask_login import login_required, logout_user, current_user
-from models import Bestilling, User, Address, User_Customer, Customer
+from flask import Blueprint
+from flask import session
+from flask import render_template
+from flask import jsonify
+
+from flask_login import login_required
+from flask_login import current_user
+
+from models import Bestilling
+from models import User
+from models import Address
+from models import User_Customer
+from models import Customer
+
 from weather import get_weather
-from utils import role_required, ROLES
+
+from utils import role_required
+from utils import ROLES
+
 from forms import SelectCustomer
 
 

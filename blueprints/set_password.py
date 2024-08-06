@@ -1,10 +1,17 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import current_user, logout_user
-from werkzeug.security import generate_password_hash
-from models import db, User
-from utils import verify_token
-from forms import SetPasswordForm
+from flask import Blueprint
+from flask import render_template
+from flask import redirect
+from flask import flash
+
+from flask_login import logout_user
+
+from models import db
 from models import User
+
+from utils import verify_token
+
+from forms import SetPasswordForm
+
 
 SET_PASSWORD = Blueprint('user', __name__)
 

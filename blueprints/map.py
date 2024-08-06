@@ -1,11 +1,21 @@
-from flask import Flask, url_for, render_template, request, session, redirect, Blueprint
-from database import db
-from datetime import datetime
-import json
-from flask_login import login_required, current_user
-from models import Address, User, Bestilling, User_Customer, Customer
-from utils import role_required, ROLES
-from forms import SelectCustomer, ChooseDatesOnMap
+from flask import render_template
+from flask import session
+from flask import Blueprint
+
+from flask_login import login_required
+from flask_login import current_user
+
+from models import Address
+from models import User
+from models import Bestilling
+from models import User_Customer
+from models import Customer
+
+from utils import ROLES
+from utils import role_required
+
+from forms import SelectCustomer
+from forms import ChooseDatesOnMap
 
 MAP = Blueprint('map', __name__)
 

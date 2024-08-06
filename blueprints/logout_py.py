@@ -1,5 +1,11 @@
-from flask import Flask, Blueprint, session, redirect, url_for
-from flask_login import login_required, logout_user
+from flask import Blueprint
+from flask import redirect
+from flask import url_for
+
+from flask_login import login_required
+from flask_login import logout_user
+
+
 LOGOUT = Blueprint('logout', __name__)
 
 @LOGOUT.route('/logout')

@@ -1,11 +1,14 @@
-from database import db
-from flask import Flask, Blueprint, request, render_template, redirect, url_for, flash, jsonify
-from forms import AddressForm
-from flask_login import login_required, current_user
+from flask import Blueprint
+from flask import request
+from flask import jsonify
+
+from flask_login import login_required
+
 import urllib.parse
 import requests
-from models import Address
-from utils import role_required, ROLES
+
+
+
 
 SOK_ADRESSE = Blueprint('sok_adresse', __name__)
 

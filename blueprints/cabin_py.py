@@ -1,10 +1,23 @@
-from flask import Flask, Blueprint, session, render_template, request, flash, redirect, url_for
+from flask import Blueprint
+from flask import render_template
+from flask import flash
+from flask import redirect
+from flask import url_for
+
 from blueprints.calender_logic import cal_logic
-from flask_login import login_required, current_user
+
+from flask_login import login_required
+from flask_login import current_user
+
 from forms import CalendarForm
-from models import User, Bestilling
+
+from models import Bestilling
+
 from database import db
-from utils import role_required, ROLES
+
+from utils import role_required
+from utils import ROLES
+
 
 
 

@@ -20,8 +20,6 @@
 </div>
 
 <!-- Form container -->
-<!-- Form container -->
-<!-- Form container -->
 <div class="container mb-5 map-form">
   <div class="row">
     <!-- First form -->
@@ -238,7 +236,7 @@
               '">Brøytet ferdig</a></p>';
       }
 
-      // Formatering av datoer
+      // Formatting dates
       var today = new Date();
       var tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -311,11 +309,6 @@
       map.flyToBounds(paddedBounds, {duration: 0.5});
     });
 
-//    map.on('locationfound', function(e) {
-//      L.marker(e.latlng).addTo(map)
-//          .bindPopup("Din posisjon").openPopup();
-//    });
-
 
        // Event listener for location found
        map.on('locationfound', function(e) {
@@ -324,7 +317,7 @@
       });
     
     document.getElementById('current-position').addEventListener('click', function() {
-      map.locate({setView: true});
+      map.locate({setView: true, watch: true});
     });
   }
 

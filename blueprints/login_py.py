@@ -1,7 +1,18 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, flash
+from flask import Blueprint
+from flask import render_template
+from flask import request
+from flask import session
+from flask import redirect
+from flask import url_for
+from flask import flash
+
 from models import User
+
 from forms import LoginForm
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+
+from flask_login import login_user
+from flask_login import LoginManager
+
 
 LOGIN = Blueprint('login', __name__)
 

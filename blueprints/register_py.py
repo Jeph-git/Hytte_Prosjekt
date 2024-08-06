@@ -1,10 +1,30 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, login_required, current_user
-from werkzeug.security import generate_password_hash  # Use secure password hashing
+from flask import Blueprint
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import flash
+
+from flask_login import login_user
+from flask_login import login_required
+from flask_login import current_user
+
 from database import db
-from models import User, Customer, User_Customer, Governor_User, User_Customer, Address
-from forms import RegisterForm, RegisterGovernorForm, RegisterCustomer, RegisterUserForm, RegisterPlowmanForm
-from utils import generate_token, send_token
+
+from models import User
+from models import Customer
+from models import User_Customer
+from models import Governor_User
+from models import Address
+
+from forms import RegisterForm
+from forms import RegisterGovernorForm
+from forms import RegisterCustomer
+from forms import RegisterUserForm
+from forms import RegisterPlowmanForm
+
+from utils import generate_token
+from utils import send_token
+
 
 
 REGISTER = Blueprint('register', __name__)

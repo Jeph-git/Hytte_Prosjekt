@@ -1,9 +1,22 @@
-from flask import render_template, redirect, url_for, flash, render_template_string, Blueprint
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import flash
+from flask import render_template_string
+from flask import Blueprint
+
 from flask_login import current_user
+
 from database import db
+
 from models import User
-from forms import ResetPasswordRequestForm, ResetPasswordForm
-from flask_mailman import EmailMessage, Mail
+
+from forms import ResetPasswordRequestForm
+from forms import ResetPasswordForm
+
+from flask_mailman import EmailMessage
+from flask_mailman import Mail
+
 
 RESET_PASSWORD = Blueprint('reset_password', __name__)
 

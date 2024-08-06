@@ -92,12 +92,12 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {% if active_page == 'profil' %}active{% endif %}" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-fill"></i> Profil</a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item " href="{{ url_for('profil.profil') }}"><i class="bi bi-person-fill"></i> Vis Profil</a>
-                        <a class="dropdown-item" href="{{ url_for('logout.logout') }}"><i class="bi bi-box-arrow-left"></i> Logg ut</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('profil.profil') }}"><i class="bi bi-person-fill"></i> Vis Profil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout.logout') }}"><i class="bi bi-box-arrow-left"></i> Logg ut</a>
                 </li>
                 {% else %}
                 <li class="nav-item">

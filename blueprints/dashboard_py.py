@@ -1,4 +1,5 @@
-from flask import Flask, Blueprint, session, redirect, url_for, render_template
+from flask import Blueprint
+from flask import render_template
 from flask_login import login_required
 
 DASHBOARD = Blueprint('dashboard', __name__)

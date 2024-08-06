@@ -1,15 +1,30 @@
-import urllib
-from flask import Flask, Blueprint, session, render_template, request, flash, redirect, url_for
-from flask_login import current_user
 import requests
-from database import db
-from models import User, Bestilling, Address, User_Customer, Customer
-from flask_login import login_required
-from utils import role_required, ROLES
 import json
 from datetime import datetime
+
+from flask import Blueprint
+from flask import session
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import url_for
+
+from flask_login import current_user
+from flask_login import login_required
+
+
+from models import User
+from models import Bestilling
+from models import Address
+from models import User_Customer
+from models import Customer
+
+from utils import role_required
+from utils import ROLES
+
 from babel.dates import format_datetime
 from flask_babel import _
+
 
 CABIN_BONDE = Blueprint('cabin_bonde', __name__)
 

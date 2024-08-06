@@ -1,9 +1,26 @@
-from flask import Flask, Blueprint, session, redirect, url_for, render_template, flash, request
-from models import User, Bestilling, Customer, User_Customer, Governor_User, Governor_Plowman, Address
-from flask_login import current_user, login_required
+from flask import Blueprint
+from flask import session
+from flask import redirect
+from flask import url_for
+from flask import render_template
+from flask import flash
+
+from models import Bestilling
+from models import Customer
+from models import User_Customer
+from models import Governor_User
+from models import Address
+
+from flask_login import current_user
+from flask_login import login_required
+
 from database import db
-from utils import role_required, ROLES
+
+from utils import role_required
+from utils import ROLES
+
 from forms import SelectCustomer
+
 
 ORDERS = Blueprint('orders', __name__)
 

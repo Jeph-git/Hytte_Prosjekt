@@ -1,16 +1,15 @@
 import os
 # Flask imports
-from flask import Flask, url_for, render_template, request, session, redirect, send_from_directory, jsonify, send_file
+from flask import Flask
+from flask import render_template
+from flask import session
 from flask_migrate import Migrate
 from flask_babel import Babel
 from flask_babel import _
 from flask_login import LoginManager
 from flask_mailman import EmailMessage, Mail
 
-from models import User
 from database import db
-from forms import LoginForm
-from roles import ROLES
 
 # Blueprints imports
 from blueprints.login_py import LOGIN, initialize_login_manager
@@ -32,7 +31,7 @@ from blueprints.reset_password import RESET_PASSWORD
 app = Flask(__name__, instance_relative_config=True)
 login_manager = initialize_login_manager(app)
 
-# Babel for å oversette til norsk
+# Babel to translate to norwegian
 babel = Babel(app)
 babel.init_app(app)
 app.config['BABEL_DEFAULT_LOCALE'] = 'nb_NO'
@@ -57,7 +56,7 @@ if is_heroku:
     app.secret_key = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 else:
-    app.config.from_pyfile('config.py') # Hemmelig ting
+    app.config.from_pyfile('config.py') # Secret key and database URI
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -124,5 +123,5 @@ def internal_server_error(e):
 
 
 if __name__ == '__main__':
-    # app.run(debug=True, host= '192.168.39.203') 
-    app.run(debug=True) # Denne funker med current position
+    # app.run(debug=True, host= IP) # This one for running on local network
+    app.run(debug=True) # This one for checking current-position on map

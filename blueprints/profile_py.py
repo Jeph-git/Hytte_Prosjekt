@@ -1,11 +1,24 @@
-from flask import Flask, url_for, render_template, request, session, redirect, Blueprint, flash
+from flask import url_for
+from flask import render_template
+from flask import redirect
+from flask import Blueprint
+from flask import flash
+
 from babel.dates import format_datetime
+
 from flask_babel import _
+
 from models import User
+
 from forms import AddEmailForm
-from flask_login import current_user, logout_user, login_required
-from database import db 
-from sqlalchemy.exc import IntegrityError
+
+from flask_login import current_user
+from flask_login import logout_user
+from flask_login import login_required
+
+from database import db
+
+
 
 
 PROFIL = Blueprint('profil', __name__)

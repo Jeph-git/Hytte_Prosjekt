@@ -1,7 +1,17 @@
-from flask import Flask, Blueprint, session, redirect, url_for, render_template, flash, request
-from flask_login import login_required, logout_user, current_user
-from models import User, Bestilling
-from utils import role_required, ROLES
+from flask import Blueprint
+from flask import redirect
+from flask import url_for
+from flask import render_template
+from flask import flash
+
+from flask_login import login_required
+
+from models import User
+from models import Bestilling
+
+from utils import role_required
+from utils import ROLES
+
 
 
 ADMIN = Blueprint('admin', __name__)
