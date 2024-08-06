@@ -121,7 +121,7 @@
   var currentLocationMarker = null;
 
   // addCurrentLocationMarker
-  function addCurrentLocationMarker(map, latlng) {
+  function addCurrentLocationMarkerOLD(map, latlng) {
     if (currentLocationMarker) {
       map.removeLayer(currentLocationMarker); // Remove previous marker if exists
     } 
@@ -130,7 +130,13 @@
     }
   }
 
-
+  function addCurrentLocationMarker(map, latlng) {
+    if (currentLocationMarker) {
+      currentLocationMarker.setLatLng(latlng); // Update marker position
+    } else {
+      currentLocationMarker = L.marker(latlng).addTo(map).bindPopup("Din posisjon").openPopup();
+    }
+  }
 
   //Defunct function
   function getIconUrl2(orderPending, hasMessage) {
@@ -182,28 +188,12 @@
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-			setInterval(()=> {
-				navigator.geolocation.getCurrentPosition(getPosition);
-			}, 5000);
-
+            L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         }, function(error) {
-			console.error('Error getting location', error);
+            console.error('Error getting location', error);
         });
-    } 
-	else {
-		console.error('Geolocation is not supported by this browser');
-    }
-
-    function getPosition(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var accuracy = position.coords.accuracy;  
-
-      var marker = L.marker([lat, lon])
-      var circle = L.circle([lat, lon], {radius: accuracy})
-
-      var featureGroup = L.featureGroup([marker, circle]).addTo(map);
-      map.fitBounds(featureGroup.getBounds());
+    } else {
+        console.error('Geolocation is not supported by this browser');
     }
 
     var markers = {{ markers|tojson }};
