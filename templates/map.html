@@ -194,16 +194,23 @@
 		console.error('Geolocation is not supported by this browser');
     }
 
+	var marker, circle;
+
     function getPosition(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var accuracy = position.coords.accuracy;  
+		var lat = position.coords.latitude;
+		var lon = position.coords.longitude;
+		var accuracy = position.coords.accuracy;  
+		if (marker) {
+			map.removeLayer(marker);
+		}
+		if (circle) {
+			map.removeLayer(circle);
+		}
+		marker = L.marker([lat, lon])
+		circle = L.circle([lat, lon], {radius: accuracy})
 
-      var marker = L.marker([lat, lon])
-      var circle = L.circle([lat, lon], {radius: accuracy})
-
-      var featureGroup = L.featureGroup([marker, circle]).addTo(map);
-      map.fitBounds(featureGroup.getBounds());
+		var featureGroup = L.featureGroup([marker, circle]).addTo(map);
+		map.fitBounds(featureGroup.getBounds());
     }
 
     var markers = {{ markers|tojson }};
